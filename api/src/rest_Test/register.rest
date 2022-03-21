@@ -1,0 +1,10 @@
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+    "first_name": "Bach",
+    "last_name": "Phung",
+    "username": "quangbach",
+    "password": "123456789",
+    "email": "quangbach123@gmail.com"
+}

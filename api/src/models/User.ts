@@ -6,7 +6,7 @@ export type UserDocument = Document & {
     username: string,
     password:string,
     email:string,
-    avatar:string,
+    avatar?:string,
     isAdmin: boolean
 }
 
@@ -23,7 +23,8 @@ const UserSChema = new Schema<UserDocument>({
     },
     username:{
         type:String,
-        minlength:8
+        minlength:8,
+        required: true
     },
     password:{
         type:String,

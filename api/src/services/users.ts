@@ -1,6 +1,6 @@
 import User, {UserDocument} from '../models/User'
 
-const create = async(user: UserDocument): Promise<UserDocument> =>{
+const create = async (user: UserDocument): Promise<UserDocument> =>{
     return user.save();
 }
 
@@ -9,6 +9,14 @@ const findById = async (userId: string): Promise<UserDocument> =>{
 
     if(!foundUser){
         throw new Error(`User ${userId} not found`);
+    }
+    return foundUser;
+}
+
+const findByCredential = async (obj: Object): Promise<UserDocument> => {
+    const foundUser = await User.findOne({...obj})
+    if(!foundUser){
+        throw new Error(`User not found`);
     }
     return foundUser;
 }
@@ -38,7 +46,8 @@ export default {
     findById,
     findAll,
     update,
-    deleteUser
+    deleteUser,
+    findByCredential
 }
 
 
