@@ -10,6 +10,8 @@ const config_1 = __importDefault(require("./middlewares/config"));
 const auth_1 = __importDefault(require("./routers/auth"));
 const user_1 = __importDefault(require("./routers/user"));
 const product_1 = __importDefault(require("./routers/product"));
+const cart_1 = __importDefault(require("./routers/cart"));
+const order_1 = __importDefault(require("./routers/order"));
 const unknownEndpoints_1 = __importDefault(require("./middlewares/unknownEndpoints"));
 const errorHandler_1 = __importDefault(require("./middlewares/errorHandler"));
 const logger_1 = __importDefault(require("./middlewares/logger"));
@@ -31,6 +33,8 @@ app.use(logger_1.default);
 app.use('/api/auth', auth_1.default);
 app.use('/api/users', user_1.default);
 app.use('/api/products', product_1.default);
+app.use('/api/carts', cart_1.default);
+app.use('/api/orders', order_1.default);
 app.use(unknownEndpoints_1.default);
 app.use(errorHandler_1.default);
 app.listen(config_1.default.PORT, () => {
