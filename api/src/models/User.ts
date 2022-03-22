@@ -1,14 +1,19 @@
 import { Schema, model, Document } from 'mongoose'
 
-export type UserDocument = Document & {
+type User = {
     first_name: string,
     last_name: string,
     username: string,
     password:string,
     email:string,
     avatar?:string,
-    isAdmin: boolean
+    isAdmin: boolean,
+    isBanned: boolean
 }
+
+export interface UserDocument extends User, Document{};
+
+export interface SimpleUser extends Omit<User, 'avatar' | 'password'>, Document{}
 
 const UserSChema = new Schema<UserDocument>({
     first_name:{
@@ -23,8 +28,7 @@ const UserSChema = new Schema<UserDocument>({
     },
     username:{
         type:String,
-        minlength:8,
-        required: true
+        minlength:8
     },
     password:{
         type:String,
@@ -38,6 +42,10 @@ const UserSChema = new Schema<UserDocument>({
         default:""
     },
     isAdmin:{
+        type:Boolean,
+        default:false
+    },
+    isBanned:{
         type:Boolean,
         default:false
     }

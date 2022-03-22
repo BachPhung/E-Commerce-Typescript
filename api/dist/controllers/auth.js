@@ -16,11 +16,9 @@ exports.userLogin = exports.userRegister = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const User_1 = __importDefault(require("../models/User"));
 const users_1 = __importDefault(require("../services/users"));
-const dotenv_1 = __importDefault(require("dotenv"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../middlewares/config"));
-dotenv_1.default.config();
-const saltRound = Number(process.env.SALTROUNDS);
+const saltRound = Number(config_1.default.SALTROUNDS);
 const tokenSecret = config_1.default.TOKENSECRET;
 exports.userRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -73,7 +71,7 @@ exports.userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         }
     }
     catch (err) {
-        res.status(400).json(err);
+        res.status(400).json('eoor');
         //next(err)
     }
 });

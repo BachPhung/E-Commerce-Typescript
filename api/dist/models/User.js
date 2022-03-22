@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+;
 const UserSChema = new mongoose_1.Schema({
     first_name: {
         type: String,
@@ -14,8 +15,7 @@ const UserSChema = new mongoose_1.Schema({
     },
     username: {
         type: String,
-        minlength: 8,
-        required: true
+        minlength: 8
     },
     password: {
         type: String,
@@ -29,6 +29,10 @@ const UserSChema = new mongoose_1.Schema({
         default: ""
     },
     isAdmin: {
+        type: Boolean,
+        default: false
+    },
+    isBanned: {
         type: Boolean,
         default: false
     }

@@ -8,6 +8,8 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
 const config_1 = __importDefault(require("./middlewares/config"));
 const auth_1 = __importDefault(require("./routers/auth"));
+const user_1 = __importDefault(require("./routers/user"));
+const product_1 = __importDefault(require("./routers/product"));
 const unknownEndpoints_1 = __importDefault(require("./middlewares/unknownEndpoints"));
 const errorHandler_1 = __importDefault(require("./middlewares/errorHandler"));
 const logger_1 = __importDefault(require("./middlewares/logger"));
@@ -27,6 +29,8 @@ mongoose_1.default.connect(config_1.default.MONGODB_URI, {
 // Router
 app.use(logger_1.default);
 app.use('/api/auth', auth_1.default);
+app.use('/api/users', user_1.default);
+app.use('/api/products', product_1.default);
 app.use(unknownEndpoints_1.default);
 app.use(errorHandler_1.default);
 app.listen(config_1.default.PORT, () => {

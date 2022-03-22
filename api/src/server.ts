@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import config from './middlewares/config'
 import authRouter from './routers/auth'
+import userRouter from './routers/user'
+import productRouter from './routers/product'
 import unknowEndpoint  from './middlewares/unknownEndpoints'
 import errorHandler from './middlewares/errorHandler'
 import requestLogger from './middlewares/logger'
@@ -25,7 +27,8 @@ mongoose.connect(config.MONGODB_URI!, {
 // Router
 app.use(requestLogger);
 app.use('/api/auth', authRouter);
-
+app.use('/api/users', userRouter);
+app.use('/api/products', productRouter);
 app.use(unknowEndpoint);
 app.use(errorHandler)
 app.listen(config.PORT, () => {

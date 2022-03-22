@@ -34,11 +34,20 @@ const update = async(userId:string, updatedUser: Partial<UserDocument>): Promise
 }
 
 const deleteUser = async (userId: string): Promise<UserDocument | null> =>{
-    const foundUser = User.findByIdAndDelete(userId)
+    const foundUser = await User.findByIdAndDelete(userId)
     if(!foundUser){
         throw new Error(`User ${userId} not found`);
     }
     return foundUser
+}
+
+const bannedUser = async (userId: string) : Promise<UserDocument | null> => {
+    const foundUser = await User.findById(userId)
+    if(!foundUser){
+        throw new Error(`User ${userId} not found`);
+    }
+    foundUser.isBanned = !foundUser.isBanned
+    return update(userId, foundUser);
 }
 
 export default {
@@ -47,7 +56,8 @@ export default {
     findAll,
     update,
     deleteUser,
-    findByCredential
+    findByCredential,
+    bannedUser
 }
 
 

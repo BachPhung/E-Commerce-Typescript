@@ -2,11 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import bcrypt from 'bcrypt'
 import User from "../models/User";
 import UserServ from "../services/users"
-import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
 import config from '../middlewares/config'
-dotenv.config()
-const saltRound = Number(process.env.SALTROUNDS)
+const saltRound = Number(config.SALTROUNDS)
 const tokenSecret = config.TOKENSECRET;
 export const userRegister = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -60,7 +58,7 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
         }
     }
     catch (err) {
-        res.status(400).json(err)
+        res.status(400).json('eoor')
         //next(err)
     }
 }

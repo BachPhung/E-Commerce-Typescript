@@ -41,11 +41,19 @@ const update = (userId, updatedUser) => __awaiter(void 0, void 0, void 0, functi
     return foundUser;
 });
 const deleteUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = User_1.default.findByIdAndDelete(userId);
+    const foundUser = yield User_1.default.findByIdAndDelete(userId);
     if (!foundUser) {
         throw new Error(`User ${userId} not found`);
     }
     return foundUser;
+});
+const bannedUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const foundUser = yield User_1.default.findById(userId);
+    if (!foundUser) {
+        throw new Error(`User ${userId} not found`);
+    }
+    foundUser.isBanned = !foundUser.isBanned;
+    return update(userId, foundUser);
 });
 exports.default = {
     create,
@@ -53,6 +61,7 @@ exports.default = {
     findAll,
     update,
     deleteUser,
-    findByCredential
+    findByCredential,
+    bannedUser
 };
 //# sourceMappingURL=users.js.map
