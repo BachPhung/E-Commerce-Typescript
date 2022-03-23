@@ -1,5 +1,5 @@
 import ProductServ from '../services/products';
-import { ProductDocument } from '../models/Product';
+import Product, { ProductDocument } from '../models/Product';
 import { Request, Response, NextFunction } from 'express';
 
 export const findAll = async (req: Request, res: Response, next: NextFunction) => {
@@ -57,7 +57,7 @@ export const findById = async (req: Request, res: Response, next: NextFunction) 
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const newProduct = ProductServ.create(req.body);
+        const newProduct = await ProductServ.create(new Product(req.body));
         res.status(200).json(newProduct);
     }   
     catch(err){

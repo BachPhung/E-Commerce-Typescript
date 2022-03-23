@@ -1,7 +1,7 @@
 import Product, {ProductDocument} from '../models/Product'
 
 const create = async (product: ProductDocument): Promise<ProductDocument> =>{
-    return product.save();
+    return product.save()
 }
 
 const findById = async (productId: string): Promise<ProductDocument> =>{

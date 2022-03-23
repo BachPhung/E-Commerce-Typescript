@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addProduct = exports.findById = exports.deleteProduct = exports.updateProduct = exports.findAll = void 0;
 const products_1 = __importDefault(require("../services/products"));
+const Product_1 = __importDefault(require("../models/Product"));
 exports.findAll = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const queryNewProduct = req.query.new;
@@ -66,7 +67,7 @@ exports.findById = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.addProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newProduct = products_1.default.create(req.body);
+        const newProduct = yield products_1.default.create(new Product_1.default(req.body));
         res.status(200).json(newProduct);
     }
     catch (err) {

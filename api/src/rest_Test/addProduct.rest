@@ -1,0 +1,16 @@
+POST http://localhost:5000/api/products
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMzkyMWQyZjRjYWM2NGQxOGQyZmQ1YSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0ODAwMDQwNSwiZXhwIjoxNjQ4MTczMjA1fQ.S9oCRZYK3Uw_eZPqaV2b-JtjgP0aqkZMilkXonNxFVQ
+
+{
+    "title": "Timberland Core Tree Logo hoodie in dark blue",
+    "desc": "Act casual, Drawstring hood, Large logo print to chest, Pouch pocket, Regular fit",
+    "img":[
+        "https://images.asos-media.com/products/timberland-core-tree-logo-hoodie-in-dark-blue/200615178-1-midblue?$n_640w$&wid=513&fit=constrain",
+        "https://images.asos-media.com/products/timberland-core-tree-logo-hoodie-in-dark-blue/200615178-2?$n_640w$&wid=513&fit=constrain"
+    ],
+    "categories": ["Hoodie", "Men"],
+    "size": ["XS", "S", "M", "L", "XL", "XXL"],
+    "color": ["darkblue"],
+    "price": 79.90
+}
