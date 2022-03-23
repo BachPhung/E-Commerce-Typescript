@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addCart = exports.findById = exports.deleteCart = exports.updateCart = exports.findAll = void 0;
 const carts_1 = __importDefault(require("../services/carts"));
+const Cart_1 = __importDefault(require("../models/Cart"));
 exports.findAll = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const foundCarts = yield carts_1.default.findAll();
@@ -54,7 +55,7 @@ exports.findById = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.addCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newCart = carts_1.default.create(req.body);
+        const newCart = carts_1.default.create(new Cart_1.default(req.body));
         res.status(200).json(newCart);
     }
     catch (err) {

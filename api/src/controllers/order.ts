@@ -1,5 +1,6 @@
 import OrderServ from '../services/orders';
 import { Request, Response, NextFunction } from 'express';
+import Order from '../models/Order';
 
 export const findAll = async (req: Request, res: Response, next: NextFunction) => {
     try{
@@ -55,7 +56,7 @@ export const findMonthlyOrder = async (req: Request, res: Response, next: NextFu
 
 export const addOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const newOrder = OrderServ.create(req.body);
+        const newOrder = OrderServ.create(new Order(req.body));
         res.status(200).json(newOrder);
     }   
     catch(err){

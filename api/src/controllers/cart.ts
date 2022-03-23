@@ -1,5 +1,6 @@
 import CartServ from '../services/carts';
 import { Request, Response, NextFunction } from 'express';
+import Cart from '../models/Cart';
 
 export const findAll = async (req: Request, res: Response, next: NextFunction) => {
     try{
@@ -45,7 +46,7 @@ export const findById = async (req: Request, res: Response, next: NextFunction) 
 
 export const addCart = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const newCart = CartServ.create(req.body);
+        const newCart = CartServ.create(new Cart(req.body));
         res.status(200).json(newCart);
     }   
     catch(err){

@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addOrder = exports.findMonthlyOrder = exports.findById = exports.deleteOrder = exports.updateOrder = exports.findAll = void 0;
 const orders_1 = __importDefault(require("../services/orders"));
+const Order_1 = __importDefault(require("../models/Order"));
 exports.findAll = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const foundOrders = yield orders_1.default.findAll();
@@ -63,7 +64,7 @@ exports.findMonthlyOrder = (req, res, next) => __awaiter(void 0, void 0, void 0,
 });
 exports.addOrder = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newOrder = orders_1.default.create(req.body);
+        const newOrder = orders_1.default.create(new Order_1.default(req.body));
         res.status(200).json(newOrder);
     }
     catch (err) {
