@@ -3,7 +3,7 @@ import { Schema, model, Document } from 'mongoose'
 export type ProductDocument = Document & {
     title: string,
     desc:string,
-    img:string,
+    img:string[],
     categories: Array<string>,
     size: string[],
     color: string[],
@@ -21,7 +21,7 @@ const ProductSchema = new Schema<ProductDocument>({
         required:true
     },
     img:{
-        type:String,
+        type:[String],
         default:""
     },
     categories:{

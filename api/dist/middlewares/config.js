@@ -11,11 +11,13 @@ let MONGODB_URI = process.env.NODE_ENV === 'test'
 let PORT = process.env.PORT;
 let TOKENSECRET = process.env.TOKENSECRET;
 let SALTROUNDS = process.env.SALTROUNDS;
+let STRIPE_KEY = process.env.STRIPE_KEY;
 const config = {
     MONGODB_URI,
     PORT,
     TOKENSECRET,
-    SALTROUNDS
+    SALTROUNDS,
+    STRIPE_KEY
 };
 exports.default = config;
 //# sourceMappingURL=config.js.map

@@ -23,7 +23,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^10.0.8",
-    "mongoose": "^5.11.15"
+    "mongoose": "^5.11.15",
+    "stripe": "^8.210.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -32,6 +33,7 @@
     "@types/express": "^4.17.2",
     "@types/jest": "^24.9.1",
     "@types/node": "14.18.2",
+    "@types/stripe": "^8.0.417",
     "@types/superagent": "4.1.10",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^2.21.0",

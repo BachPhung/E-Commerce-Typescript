@@ -6,19 +6,22 @@ let MONGODB_URI = process.env.NODE_ENV === 'test'
 let PORT = process.env.PORT;
 let TOKENSECRET = process.env.TOKENSECRET;
 let SALTROUNDS = process.env.SALTROUNDS;
+let STRIPE_KEY = process.env.STRIPE_KEY;
 
 type Config = {
     MONGODB_URI?:string,
     PORT?: string,
-    TOKENSECRET?: string;
-    SALTROUNDS?: string
+    TOKENSECRET?: string,
+    SALTROUNDS?: string,
+    STRIPE_KEY?:string
 }
 
 const config:Config = {
     MONGODB_URI,
     PORT,
     TOKENSECRET,
-    SALTROUNDS
+    SALTROUNDS,
+    STRIPE_KEY
 };
 
 export default config;

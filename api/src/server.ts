@@ -6,7 +6,8 @@ import authRouter from './routers/auth';
 import userRouter from './routers/user';
 import productRouter from './routers/product';
 import cartRouter from './routers/cart';
-import orderRouter from './routers/order'
+import orderRouter from './routers/order';
+import stripeRouter from './routers/stripe'
 import unknowEndpoint  from './middlewares/unknownEndpoints';
 import errorHandler from './middlewares/errorHandler';
 import requestLogger from './middlewares/logger';
@@ -26,13 +27,14 @@ mongoose.connect(config.MONGODB_URI!, {
     console.log(`Database: ${config.MONGODB_URI}`);
 }).catch(err=>console.log(err))
 
-// Router
+// Routers
 app.use(requestLogger);
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
 app.use('/api/orders', orderRouter);
+app.use('/api/checkout', stripeRouter);
 app.use(unknowEndpoint);
 app.use(errorHandler)
 app.listen(config.PORT, () => {

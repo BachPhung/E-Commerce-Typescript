@@ -12,6 +12,7 @@ const user_1 = __importDefault(require("./routers/user"));
 const product_1 = __importDefault(require("./routers/product"));
 const cart_1 = __importDefault(require("./routers/cart"));
 const order_1 = __importDefault(require("./routers/order"));
+const stripe_1 = __importDefault(require("./routers/stripe"));
 const unknownEndpoints_1 = __importDefault(require("./middlewares/unknownEndpoints"));
 const errorHandler_1 = __importDefault(require("./middlewares/errorHandler"));
 const logger_1 = __importDefault(require("./middlewares/logger"));
@@ -28,13 +29,14 @@ mongoose_1.default.connect(config_1.default.MONGODB_URI, {
     console.log('Connect to database successfully');
     console.log(`Database: ${config_1.default.MONGODB_URI}`);
 }).catch(err => console.log(err));
-// Router
+// Routers
 app.use(logger_1.default);
 app.use('/api/auth', auth_1.default);
 app.use('/api/users', user_1.default);
 app.use('/api/products', product_1.default);
 app.use('/api/carts', cart_1.default);
 app.use('/api/orders', order_1.default);
+app.use('/api/checkout', stripe_1.default);
 app.use(unknownEndpoints_1.default);
 app.use(errorHandler_1.default);
 app.listen(config_1.default.PORT, () => {
