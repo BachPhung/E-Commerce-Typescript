@@ -1,5 +1,5 @@
 import { Schema, model, Document } from 'mongoose'
-
+const uniqueValidator = require('mongoose-unique-validator')
 type User = {
     first_name: string,
     last_name: string,
@@ -11,7 +11,7 @@ type User = {
     isBanned: boolean
 }
 
-export interface UserDocument extends User, Document{};
+export interface UserDocument extends User, Document{}
 
 export interface SimpleUser extends Omit<User, 'avatar' | 'password'>, Document{}
 
@@ -28,14 +28,16 @@ const UserSChema = new Schema<UserDocument>({
     },
     username:{
         type:String,
-        minlength:8
+        minlength:8,
+        unique:true
     },
     password:{
         type:String,
         minlength:8
     },
     email:{
-        type:String
+        type:String,
+        unique:true
     },
     avatar:{
         type:String,
@@ -50,5 +52,7 @@ const UserSChema = new Schema<UserDocument>({
         default:false
     }
 }, {timestamps:true})
+
+UserSChema.plugin(uniqueValidator)
 
 export default model<UserDocument>('User', UserSChema);

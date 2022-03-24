@@ -9,6 +9,11 @@ const tokenSecret = config.TOKENSECRET;
 export const userRegister = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { first_name, last_name, username, password, email } = req.body
+        if(username.length < 8 || password.length < 8 ) {
+            return res.status(401).json({
+                error: 'Username or Password must be at least 8 chars long'
+            })
+        }
         if (saltRound) {
             const savedUser = new User({
                 first_name,
@@ -25,7 +30,7 @@ export const userRegister = async (req: Request, res: Response, next: NextFuncti
     }
     catch (error) {
         if (error instanceof Error) {
-            res.status(400).json({error: error.message})
+            res.status(400).json({error: "username or email has already existed"})
         } else {
             next(error)
         }
