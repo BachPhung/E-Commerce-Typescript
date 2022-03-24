@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt'
-import User from '../models/User'
-import helper from '../utils/test_helper'
+import User from '../src/models/User'
+import helper from '../src/utils/test_helper'
 import supertest from 'supertest'
-import app from '../app'
+import app from '../src/app'
 import mongoose from 'mongoose'
-import config from '../middlewares/config'
+import config from '../src/middlewares/config'
 
 const api = supertest(app);
 
