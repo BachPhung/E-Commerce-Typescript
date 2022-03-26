@@ -1,10 +1,10 @@
-import { HeroSliders } from "./components/HeroSlider/HeroSlider";
-import {Navbar} from "./components/Navbar/Navbar";
+import { LandingPage } from "./pages/LandingOnPage/LandingPage";
+import { ProductListPage } from "./pages/ProductListPage/ProductList";
 function App() {
   return (
     <div>
-      <Navbar/>
-      <HeroSliders/>
+      {/* <LandingPage/> */}
+      <ProductListPage/>
     </div>
   );
 }

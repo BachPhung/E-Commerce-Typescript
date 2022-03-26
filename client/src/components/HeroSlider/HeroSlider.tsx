@@ -1,7 +1,7 @@
 import './HeroSlider.scss'
 import styled from 'styled-components'
 import { SliderData as slides } from '../../data/SliderData'
-import {Button} from '@mui/material'
+import { Button } from '@mui/material'
 import { ArrowForward } from '@material-ui/icons'
 import { useEffect, useRef, useState } from 'react'
 const HeroSection = styled.section`
@@ -77,49 +77,61 @@ const HeroContent = styled.div`
     }
 `
 
+const HeroDesc = styled.div`
+    margin-left: 20px;
+    position: absolute;
+    bottom: 30px;
+    z-index: 10;
+    display: flex;
+    max-width: 400px;
+    text-align: left;
+    color: #fff;
+    font-size: 40px;
+`
 
 export const HeroSliders = () => {
   const [current, setCurrent] = useState(0)
   const length = slides.length
   const timeout = useRef<ReturnType<typeof setTimeout> | null>(null)
-  useEffect(()=>{
-    const nextSlide = () =>{
-        setCurrent(curV => (curV===length-1) ? 0 : curV + 1)
+  useEffect(() => {
+    const nextSlide = () => {
+      setCurrent(curV => (curV === length - 1) ? 0 : curV + 1)
     }
     timeout.current = setTimeout(nextSlide, 5000)
-    return () =>{
-        if(timeout.current) {
-            clearTimeout(timeout.current)
-        }
+    return () => {
+      if (timeout.current) {
+        clearTimeout(timeout.current)
+      }
     }
-  },[current,length])
+  }, [current, length])
   const nextSlide = () => {
-      setCurrent(current === length - 1 ? 0 : current + 1)
+    setCurrent(current === length - 1 ? 0 : current + 1)
   }
   const prevSlide = () => {
-    setCurrent(current === 0 ? length - 1 : current -1)
+    setCurrent(current === 0 ? length - 1 : current - 1)
   }
   return (
-  <HeroSection>
-    <HeroWrapper>
-      {slides.map((slide,index)=>{
-        return(
-          <HeroSlide key={index}>
-            {index === current &&(    
-            <HeroSlider>
-              <HeroImage src={slide.image} alt={slide.alt}/>
-                 <HeroContent>
+    <HeroSection>
+      <HeroWrapper>
+        {slides.map((slide, index) => {
+          return (
+            <HeroSlide key={index}>
+              {index === current && (
+                <HeroSlider>
+                  <HeroImage src={slide.image} alt={slide.alt} />
+                  <HeroContent>
                     <h1>{slide.title}</h1>
                     <Button className='btn-slider' variant='outlined'>{slide.label}
-                    <ArrowForward className='arrow-fw-slider'/>
+                      <ArrowForward className='arrow-fw-slider' />
                     </Button>
-                </HeroContent>
-              </HeroSlider>
-            )}
-          </HeroSlide>
-        )
-      })}
-    </HeroWrapper>
-  </HeroSection>
+                  </HeroContent>
+                  <HeroDesc>{slide.desc}</HeroDesc>
+                </HeroSlider>
+              )}
+            </HeroSlide>
+          )
+        })}
+      </HeroWrapper>
+    </HeroSection>
   )
 }

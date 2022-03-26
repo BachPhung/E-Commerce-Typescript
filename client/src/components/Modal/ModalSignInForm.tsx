@@ -16,7 +16,11 @@ const style = {
   p: 4,
 };
 
-export const ModalSignInForm = () => {
+interface ModalSignInFormProps {
+  handleChangeForm: ()=>void
+}
+
+export const ModalSignInForm = (props: ModalSignInFormProps) => {
   const [values, setValues] = useState({
     password: '',
     username:'',
@@ -53,6 +57,7 @@ export const ModalSignInForm = () => {
             id="outlined-username"
             value={values.username}
             onChange={handleChange('username')}
+            required
             inputProps={{
               'aria-label': 'username',
             }}
@@ -68,7 +73,8 @@ export const ModalSignInForm = () => {
             id="outlined-adornment-password"
             type={values.showPassword ? 'text' : 'password'}
             value={values.password}
-            onChange={handleChange('password')}
+            onChange={()=>handleChange('password')}
+            required
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -94,7 +100,7 @@ export const ModalSignInForm = () => {
         </div>
       </div>
       <div className="change-form">
-        <Button className="change-form-btn">DON'T YOU HAVE AN ACCOUNT? SIGN UP</Button>
+        <Button onClick={props.handleChangeForm} className="change-form-btn">DON'T YOU HAVE AN ACCOUNT? SIGN UP</Button>
       </div>
       </Box>
     </div>

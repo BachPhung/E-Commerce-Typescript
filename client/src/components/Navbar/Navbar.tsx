@@ -5,11 +5,14 @@ import { ClickAwayListener, Button, Grow, Paper, Popper, MenuItem as MenuItemMUI
 import Stack from '@mui/material/Stack';
 import { MyModal } from '../Modal/MyModal';
 
-const Container = styled.div`
+interface ContainerProps {
+    background:string
+}
+const Container = styled.div<ContainerProps>`
     z-index: 10 !important;
-    height: 60px;
+    height: 80px;
     position: absolute;
-    background: none;
+    background: ${p=>p.background};
     width: 100vw;
 `
 const Wrapper = styled.div`
@@ -23,16 +26,16 @@ const Left = styled.div`
     display: flex;
     align-items: center;
 `
-const Language = styled.div`
-    font-size: 14px;
-    cursor: pointer;
-`
-const Logo = styled.h1`
+
+interface LogoProps {
+    color:string
+}
+const Logo = styled.h1<LogoProps>`
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 60px;
-    color: white;
+    color: ${p=>p.color};
 `
 const Right = styled.div`
     flex: 1;
@@ -47,14 +50,16 @@ const MenuItem = styled.div`
     margin-left: 25px;
     z-index: 10 !important;
 `
-
-export const Navbar = () => {
+interface NavBarProps {
+    pages: string
+}
+export const Navbar = (props: NavBarProps) => {
   let user = null
   return (
-    <Container>
+    <Container background={props.pages==='LandingPage' ? 'none' : 'white'}>
       <Wrapper>
         <Left>
-          <Logo>BEAUTY</Logo>
+          <Logo color={props.pages==='LandingPage' ? 'white' : 'black'}>BEAUTY</Logo>
         </Left>
         <Right>
             {

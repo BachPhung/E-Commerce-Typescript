@@ -1,8 +1,18 @@
 .btn-slider{
-    color: white !important;
-    border: 2px solid white !important;
-    max-width: 200px !important;
+    color: black !important;
+    border: 0.5px solid white !important;
+    max-width: 220px !important;
+    padding: 10px!important;
+    background-color: #ECECEC !important;
+    font-size: 20px!important;
+    text-align: justify;
+    font-weight: 300 !important;
+    transition: all 0.2s ease-in-out !important;
+    &:hover{
+        transform: scaleY(1.1);
+    }
     .arrow-fw-slider{
-        color: white
+        color: black;
+        margin-left: 6px;
     }
 }
