@@ -1,4 +1,3 @@
-import { popularProducts } from "../../data/ProductData"
 import { Product } from "../Product/Product"
 import { Box } from "@mui/material"
 import { useEffect, useState } from "react"
@@ -22,9 +21,6 @@ interface FetchProduct {
     price:string
 }
 export const ProductList = ({filter}: ProductListProps) => {
-    useEffect(() => {
-        console.log(filter);
-    }, [filter])
     const [products, setProducts] = useState<FetchProduct[]>([])
     const [filteredProducts, setFilteredProducts] = useState<FetchProduct[]>([])
     useEffect(()=>{
@@ -32,6 +28,7 @@ export const ProductList = ({filter}: ProductListProps) => {
             try{
                 const res = await publicRequest.get('/products')
                 setProducts(res.data)
+                setFilteredProducts(res.data)
             }
             catch(err){
                 console.log(err)
