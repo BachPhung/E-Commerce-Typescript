@@ -13,12 +13,19 @@ interface ProductListProps {
     filter: Filter
 }
 
-interface FetchProduct {
+export interface FetchProduct {
     _id:string,
     categories: string[],
     img:string[],
     title:string,
-    price:string
+    price:string,
+    color:string[],
+    size:string[],
+    desc: string
+}
+
+export interface CartProduct extends FetchProduct {
+    quantity:string,
 }
 export const ProductList = ({filter}: ProductListProps) => {
     const [products, setProducts] = useState<FetchProduct[]>([])

@@ -4,15 +4,18 @@ import { Search, ShoppingCartOutlined } from '@material-ui/icons';
 import { ClickAwayListener, Button, Grow, Paper, Popper, MenuItem as MenuItemMUI, MenuList, Badge, Avatar } from '@material-ui/core';
 import Stack from '@mui/material/Stack';
 import { MyModal } from '../Modal/MyModal';
+import { IconButton } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 interface ContainerProps {
-    background:string
+  background: string
 }
 const Container = styled.div<ContainerProps>`
     z-index: 10 !important;
     height: 80px;
     position: absolute;
-    background: ${p=>p.background};
+    background: ${p => p.background};
     width: 100vw;
 `
 const Wrapper = styled.div`
@@ -28,14 +31,14 @@ const Left = styled.div`
 `
 
 interface LogoProps {
-    color:string
+  color: string
 }
 const Logo = styled.h1<LogoProps>`
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 60px;
-    color: ${p=>p.color};
+    color: ${p => p.color};
 `
 const Right = styled.div`
     flex: 1;
@@ -43,6 +46,7 @@ const Right = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    margin-right: 10px;
 `
 const MenuItem = styled.div`
     font-size: 14px;
@@ -51,25 +55,34 @@ const MenuItem = styled.div`
     z-index: 10 !important;
 `
 interface NavBarProps {
-    pages: string
+  pages: string
 }
 export const Navbar = (props: NavBarProps) => {
-  let user = null
+  let quantity = useSelector((state:RootState)=> state.cart.quantity)
+  let user = useSelector((state:RootState)=> state.user.currentUser)
   return (
-    <Container background={props.pages==='LandingPage' ? 'none' : 'white'}>
+    <Container background={props.pages === 'LandingPage' ? 'none' : 'white'}>
       <Wrapper>
         <Left>
-          <Logo color={props.pages==='LandingPage' ? 'white' : 'black'}>BEAUTY</Logo>
+          <Logo color={props.pages === 'LandingPage' ? 'white' : 'black'}>AZAWON</Logo>
         </Left>
         <Right>
-            {
-              !user && 
-              <MenuItem>
-                <MyModal/>
-              </MenuItem>
-            }
+          <MenuItem>
+            <IconButton>
+              <Badge badgeContent={quantity} color='secondary' showZero>
+                <ShoppingCartOutlined style={{ color: 'black', fontSize:'28px' }} />
+              </Badge>
+            </IconButton>
+          </MenuItem>
+          {
+            !user &&
+            <MenuItem>
+              <MyModal />
+            </MenuItem>
+          }
+
         </Right>
       </Wrapper>
-    </Container>
+    </Container >
   )
 }
