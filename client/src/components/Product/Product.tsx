@@ -5,7 +5,7 @@ interface ProductInterface {
     _id: string,
     img: string[],
     title:string,
-    price:string
+    price:number
 }
 
 interface ProductProps {

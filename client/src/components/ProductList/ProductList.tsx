@@ -18,14 +18,14 @@ export interface FetchProduct {
     categories: string[],
     img:string[],
     title:string,
-    price:string,
+    price:number,
     color:string[],
     size:string[],
     desc: string
 }
 
 export interface CartProduct extends FetchProduct {
-    quantity:string,
+    quantity:number,
 }
 export const ProductList = ({filter}: ProductListProps) => {
     const [products, setProducts] = useState<FetchProduct[]>([])

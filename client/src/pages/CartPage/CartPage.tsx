@@ -1,9 +1,11 @@
 import { AppBar, Box, Button, Divider, Typography } from '@mui/material'
 import { Navbar } from '../../components/Navbar/Navbar'
 import { useSelector, useDispatch } from 'react-redux'
+import { addQuantity, decreaseQuantity } from '../../redux/cartSlice'
 import styled from 'styled-components'
 import { RootState } from '../../redux/store'
-import { Add, Remove } from '@material-ui/icons'
+import { Add, Remove } from '@material-ui/icons';
+import { CartProduct } from '../../components/ProductList/ProductList'
 
 const ProductDetail = styled.div`
   flex: 2;
@@ -73,7 +75,13 @@ const SummaryItemPrice = styled.span`
 
 export const CartPage = () => {
   const cart = useSelector((state: RootState) => state.cart)
-  console.log(cart);
+  const dispatch = useDispatch()
+  const handleAddQuantity = (product: CartProduct) =>{
+    dispatch(addQuantity(product))
+  }
+  const handleDescreaseQuantity = (product: CartProduct) =>{
+    dispatch(decreaseQuantity(product))
+  }
   return (
     <div>
       <AppBar position='fixed'>
@@ -99,11 +107,11 @@ export const CartPage = () => {
                 <Box flex={2}>
                   <PriceDetails>
                     <ProductAmountContainer>
-                      <Add style={{ cursor: "pointer" }} />
+                      <Add style={{ cursor: "pointer" }} onClick={()=>handleAddQuantity(product)}></Add>
                       <ProductAmount>{product.quantity}</ProductAmount>
-                      <Remove style={{ cursor: "pointer" }} />
+                      <Remove style={{ cursor: "pointer" }} onClick={()=>handleDescreaseQuantity(product)}/>
                     </ProductAmountContainer>
-                    <ProductPrice>$ {Number(product.price) * Number(product.quantity)}</ProductPrice>
+                    <ProductPrice>€ {(product.price * product.quantity).toFixed(2)}</ProductPrice>
                   </PriceDetails>
                 </Box>
               </Box>
