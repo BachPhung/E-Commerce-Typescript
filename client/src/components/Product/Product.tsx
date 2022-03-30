@@ -1,5 +1,6 @@
 import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface ProductInterface {
     _id: string,
@@ -15,7 +16,8 @@ interface ProductProps {
 export const Product = ({product}: ProductProps) => {
     const [img, setImg] = useState(product.img[0])
     return (
-        <Card sx={{ maxWidth: 396, mt:4, flex: '1 0 21%', mr:3, position:'relative' }}>
+        <Card sx={{minWidth:300, maxWidth: 396, mt:4, flex: '1 0 21%', mr:3, position:'relative' }}>
+          <Link className='link' to={`/products/${product._id}`}>
           <CardMedia
             onMouseEnter={() => {
               setImg(product.img[1]);
@@ -36,6 +38,7 @@ export const Product = ({product}: ProductProps) => {
               {product.price} €
             </Typography>
           </CardContent>
+          </Link>
         </Card>
       );
 }

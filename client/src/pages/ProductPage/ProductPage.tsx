@@ -1,13 +1,15 @@
-import { AppBar, Box, Card, CardMedia } from '@mui/material'
+import { AppBar, Box, Card, CardMedia, Button as ButtonMUI } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Navbar } from '../../components/Navbar/Navbar'
 import { FetchProduct } from '../../components/ProductList/ProductList'
-import { publicRequest } from '../../requestMethod'
+import { publicRequest, userRequest } from '../../requestMethod'
 import { Add, Remove } from '@material-ui/icons';
 import styled from 'styled-components';
-import {useDispatch} from 'react-redux'
-import {addProduct} from '../../redux/cartSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { addProduct } from '../../redux/cartSlice'
 import './ProductPage.scss'
+import { useParams, useNavigate } from 'react-router-dom'
+import { RootState } from '../../redux/store'
 
 const Title = styled.h1`
 	font-size: 35px;
@@ -64,7 +66,7 @@ const AmountContainer = styled.div`
 	display: flex;
 	align-items: center;
 	font-weight: 700;
-` 
+`
 const Amount = styled.span`
 	width: 30px;
 	height: 30px;
@@ -86,87 +88,112 @@ const Button = styled.button`
 	}
 `
 
+type ProductParams = {
+  id: string
+}
+
 export const ProductPage = () => {
-	const dispatch = useDispatch()
-	const [product, setProduct] = useState<FetchProduct | null>(null)
-	const [quantity, setQuantity] = useState(1)
-	const [color, setColor] = useState('')
-	const [size, setSize] = useState('')
-	const handleAddProduct = () => {
-		console.log({...product, quantity, color, size});
-		dispatch(addProduct({...product, quantity, color, size}));
-	}
-	useEffect(() => {
-		const getProduct = async () => {
-			try {
-				const res = await publicRequest.get('/products/623a7f4a289e69175812e21f')
-				setProduct(res.data)
-				setColor(res.data.color[0])
-				setSize(res.data.size[0])
-			}
-			catch (err) {
-			}
-		}
-		getProduct()
-	}, [])
-	return (
-		product &&
-		<div style={{ width: '100vw !important'}}>
-			<AppBar position="fixed">
-				<Navbar pages='!' />
-			</AppBar>
-			<Box width={'100%'} display='flex' marginTop={'80px'}>
-				<Box flex={2} style={{ display: 'flex' }}>
-					{
-						product.img.map(img => {
-							return (
-								< Card >
-									<CardMedia
-										sx={{ height: "100vh" }}
-										component="img"
-										image={img}
-										alt="clothes"
-									/>
-								</Card>
-							)
-						})
-					}
-				</Box>
-				<Box flex={1} padding={'200px 0 0 60px'}>
-				<Title>{product.title}</Title>
-					<Price>€ {product.price}</Price>
-					<FilterContainer>
-						<Filter>
-							<FilterTitle>Color</FilterTitle>
-							{product.color.map(c=>
-							<span onClick={()=>setColor(c)}>
-								<FilterColor className={color === c ? 'selectedColor' : ''} key={c} color={`${c}`}/>
-							</span>
-							)}
-						</Filter>
-						<Filter>
-							<FilterTitle>Size</FilterTitle>
-							<FilterSize onChange={(e)=>setSize(e.target.value)}>
-								{product.size.map(s=><FilterSizeOption key={s}>{s}</FilterSizeOption>)}
-							</FilterSize>
-						</Filter>
-					</FilterContainer>
-					<AddContainer>
-						<AmountContainer>
-							<Remove onClick={()=>{quantity===1 ? setQuantity(1) : setQuantity(quantity-1)}} style={{cursor:'pointer'}}/>
-							<Amount>{quantity}</Amount>
-							<Add onClick={()=> setQuantity(quantity+1)} style={{cursor:'pointer'}}/>
-						</AmountContainer>
-						<Button onClick={handleAddProduct}>ADD TO CART</Button>
-					</AddContainer>
-					<Desc>{product.desc.split(',').map(i=>{
-						return(
-							<li style={{padding:'5px'}}>{i}</li>
-						)
-					})}</Desc>
-				</Box>
-				
-			</Box>
-		</div >
-	)
+  let navigate = useNavigate()
+  const id: string | undefined = useParams<ProductParams>().id
+  const dispatch = useDispatch()
+  let user = useSelector((state: RootState) => state.user.currentUser)
+  const [product, setProduct] = useState<FetchProduct | null>(null)
+  const [quantity, setQuantity] = useState(1)
+  const [color, setColor] = useState('')
+  const [size, setSize] = useState('')
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await publicRequest.get(`/products/${id}`)
+        setProduct(res.data)
+        setColor(res.data.color[0])
+        setSize(res.data.size[0])
+      }
+      catch (err) {
+      }
+    }
+    getProduct()
+  }, [])
+  const handleAddProduct = () => {
+    dispatch(addProduct({ ...product, quantity, color, size }));
+  }
+  const handleDeleteProduct = async () => {
+    try{
+      await userRequest.delete(`/products/${product?._id}`)
+      navigate('/products')
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+  return (
+    product &&
+    <div style={{ width: '100vw !important' }}>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <Navbar />
+      </AppBar>
+      <Box width={'100%'} display='flex' marginTop={'80px'}>
+        <Box flex={2} style={{ display: 'flex' }}>
+          {
+            product.img.map(img => {
+              return (
+                < Card key={img} >
+                  <CardMedia
+                    sx={{ height: "100vh" }}
+                    component="img"
+                    image={img}
+                    alt="clothes"
+                  />
+                </Card>
+              )
+            })
+          }
+        </Box>
+        <Box flex={1} padding={'200px 0 0 60px'}>
+          <Title>{product.title}</Title>
+          <Price>€ {product.price}</Price>
+          <FilterContainer>
+            <Filter>
+              <FilterTitle>Color</FilterTitle>
+              {product.color.map(c =>
+                <span key={c + Math.random()} onClick={() => setColor(c)}>
+                  <FilterColor className={color === c ? 'selectedColor' : ''} key={c} color={`${c}`} />
+                </span>
+              )}
+            </Filter>
+            <Filter>
+              <FilterTitle>Size</FilterTitle>
+              <FilterSize onChange={(e) => setSize(e.target.value)}>
+                {product.size.map(s => <FilterSizeOption key={s}>{s}</FilterSizeOption>)}
+              </FilterSize>
+            </Filter>
+          </FilterContainer>
+          <AddContainer>
+            <AmountContainer>
+              <Remove onClick={() => { quantity === 1 ? setQuantity(1) : setQuantity(quantity - 1) }} style={{ cursor: 'pointer' }} />
+              <Amount>{quantity}</Amount>
+              <Add onClick={() => setQuantity(quantity + 1)} style={{ cursor: 'pointer' }} />
+            </AmountContainer>
+            <Button onClick={handleAddProduct}>ADD TO CART</Button>
+          </AddContainer>
+          <Desc>{product.desc.split(',').map(i => {
+            return (
+              <li key={i} style={{ padding: '5px' }}>{i}</li>
+            )
+          })}
+          </Desc>
+          {
+            user && user.isAdmin && <ButtonMUI onClick={()=>{
+              if(window.confirm('Do you wanna delete this product')){
+                handleDeleteProduct()
+              }
+            }} variant='contained' color='secondary'>Remove Product</ButtonMUI>
+          }
+          {
+            user && user.isAdmin && <ButtonMUI style={{marginLeft:'10px'}} variant='contained' color='secondary'>Update Product</ButtonMUI>
+          }
+        </Box>
+      </Box>
+    </div >
+  )
 }

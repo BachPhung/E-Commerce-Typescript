@@ -2,7 +2,9 @@ import { Box, Button, FormControl, InputLabel, OutlinedInput, InputAdornment, Ic
 import { Lock } from "@material-ui/icons";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import './ModalForm.scss'
-import { useState } from "react";
+import React, { FormEvent, useState } from "react";
+import { login } from "../../apiCalls";
+import { useDispatch } from "react-redux";
 const style = {
   position: 'absolute',
   top: '50%',
@@ -17,17 +19,18 @@ const style = {
 };
 
 interface ModalSignInFormProps {
-  handleChangeForm: ()=>void
+  handleChangeForm: () => void
 }
 
 export const ModalSignInForm = (props: ModalSignInFormProps) => {
+  const dispatch = useDispatch()
   const [values, setValues] = useState({
     password: '',
-    username:'',
+    username: '',
     showPassword: false,
   });
 
-  const handleChange = (prop:string) => (event: any) => {
+  const handleChange = (prop: string) => (event: any) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
@@ -37,21 +40,32 @@ export const ModalSignInForm = (props: ModalSignInFormProps) => {
       showPassword: !values.showPassword,
     });
   };
+  const handleSubmit = async (e: React.SyntheticEvent) =>{
+    e.preventDefault()
+    console.log('form')
+    try{
+      let {showPassword, ...loginCredential} = values
+      await login(dispatch, loginCredential)
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
 
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
   return (
-    <div>
-      <Box sx={style}>
-        <div className="header-form">
-          <div className="icon-wrapper">
-            <Lock />
-          </div>
-          <div className="form-title">Sign in</div>
+    <Box sx={style}>
+      <div className="header-form">
+        <div className="icon-wrapper">
+          <Lock />
         </div>
-        <div>
-          <FormControl sx={{ m: 1, width: '99%' }} variant="outlined">
+        <div className="form-title">Sign in</div>
+      </div>
+      <form onSubmit={e=>handleSubmit(e)}>
+      <div>
+        <FormControl sx={{ m: 1, width: '99%' }} variant="outlined">
           <InputLabel htmlFor="outlined-username">Username*</InputLabel>
           <OutlinedInput
             id="outlined-username"
@@ -63,17 +77,17 @@ export const ModalSignInForm = (props: ModalSignInFormProps) => {
             }}
             label="Username"
           />
-            
-          </FormControl>
-        </div>
-        <div>
-        <FormControl sx={{ m: 1, width: '99%' }} variant="outlined">
+
+        </FormControl>
+      </div>
+      <div>
+        <FormControl  sx={{ m: 1, width: '99%' }} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Password*</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
             type={values.showPassword ? 'text' : 'password'}
             value={values.password}
-            onChange={()=>handleChange('password')}
+            onChange={handleChange('password')}
             required
             endAdornment={
               <InputAdornment position="end">
@@ -89,20 +103,20 @@ export const ModalSignInForm = (props: ModalSignInFormProps) => {
             }
             label="Password"
           />
-        </FormControl> 
+        </FormControl>
       </div>
       <div className="btn-wrapper">
         <div className="sign-in-btn">
-          <Button className="btn">Sign In</Button>
+          <Button type="submit" className="btn">Sign In</Button>
         </div>
         <div className="gg-sign-in-btn">
-            <Button className="btn">Google Sign In</Button>
+          <Button className="btn">Google Sign In</Button>
         </div>
       </div>
+      </form>
       <div className="change-form">
         <Button onClick={props.handleChangeForm} className="change-form-btn">DON'T YOU HAVE AN ACCOUNT? SIGN UP</Button>
       </div>
-      </Box>
-    </div>
+    </Box>
   )
 }

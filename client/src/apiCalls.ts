@@ -1,7 +1,7 @@
 import { publicRequest } from "./requestMethod";
 import { loginFailure, loginStart, loginSuccess } from "./redux/userSlice";
 
-type LoginCredential = {
+export type LoginCredential = {
     username: string,
     password: string
 }

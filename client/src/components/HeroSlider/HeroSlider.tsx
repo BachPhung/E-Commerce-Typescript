@@ -4,6 +4,7 @@ import { SliderData as slides } from '../../data/SliderData'
 import { Button } from '@mui/material'
 import { ArrowForward } from '@material-ui/icons'
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 const HeroSection = styled.section`
     height: 100vh;
     max-height: 1100px;
@@ -104,12 +105,7 @@ export const HeroSliders = () => {
       }
     }
   }, [current, length])
-  const nextSlide = () => {
-    setCurrent(current === length - 1 ? 0 : current + 1)
-  }
-  const prevSlide = () => {
-    setCurrent(current === 0 ? length - 1 : current - 1)
-  }
+
   return (
     <HeroSection>
       <HeroWrapper>
@@ -121,9 +117,11 @@ export const HeroSliders = () => {
                   <HeroImage src={slide.image} alt={slide.alt} />
                   <HeroContent>
                     <h1>{slide.title}</h1>
-                    <Button className='btn-slider' variant='outlined'>{slide.label}
-                      <ArrowForward className='arrow-fw-slider' />
-                    </Button>
+                    <Link className='link' to='/products'>
+                      <Button className='btn-slider' variant='outlined'>{slide.label}
+                        <ArrowForward className='arrow-fw-slider' />
+                      </Button>
+                    </Link>
                   </HeroContent>
                   <HeroDesc>{slide.desc}</HeroDesc>
                 </HeroSlider>

@@ -1,25 +1,8 @@
-import { Button, Modal } from "@mui/material";
+import { Box, Button, Modal } from "@mui/material";
 import {Login} from '@mui/icons-material'
 import { useState } from "react";
 import { ModalSignInForm } from "./ModalSignInForm";
 import { ModalSignUpForm } from "./ModalSignUpForm";
-
-const style = {
-  position: 'absolute',
-  display:'flex',
-  justifyContent:'center',
-  flexDirection:'column',
-  alignItems:'center',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
 
 export const MyModal = () => {
   const [open, setOpen] = useState(false);
@@ -47,9 +30,9 @@ export const MyModal = () => {
         aria-describedby="modal-modal-description"
       >
         {
-          form 
-          ? <ModalSignInForm handleChangeForm={handleChangeForm}/> 
-          : <ModalSignUpForm handleChangeForm={handleChangeForm}/>
+          form
+          ? <Box><ModalSignUpForm handleChangeForm={handleChangeForm}/></Box>
+          : <Box><ModalSignInForm handleChangeForm={handleChangeForm}/></Box>
         }
       </Modal>
     </div>
