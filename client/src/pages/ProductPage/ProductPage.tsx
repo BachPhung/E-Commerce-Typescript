@@ -10,6 +10,7 @@ import { addProduct } from '../../redux/cartSlice'
 import './ProductPage.scss'
 import { useParams, useNavigate } from 'react-router-dom'
 import { RootState } from '../../redux/store'
+import { MyModal } from '../../components/Modal/MyModal'
 
 const Title = styled.h1`
 	font-size: 35px;
@@ -113,7 +114,8 @@ export const ProductPage = () => {
       }
     }
     getProduct()
-  }, [])
+  }, [id])
+ 
   const handleAddProduct = () => {
     dispatch(addProduct({ ...product, quantity, color, size }));
   }
@@ -126,11 +128,20 @@ export const ProductPage = () => {
       console.log(err)
     }
   }
+  const handleUpdateProduct = async (updatedInfo: Partial<FetchProduct>) => {
+    try{
+      const res = await userRequest.put(`/products/${product?._id}`, updatedInfo)
+      setProduct(res.data)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
   return (
     product &&
     <div style={{ width: '100vw !important' }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Navbar />
+        <Navbar  />
       </AppBar>
       <Box width={'100%'} display='flex' marginTop={'80px'}>
         <Box flex={2} style={{ display: 'flex' }}>
@@ -190,7 +201,7 @@ export const ProductPage = () => {
             }} variant='contained' color='secondary'>Remove Product</ButtonMUI>
           }
           {
-            user && user.isAdmin && <ButtonMUI style={{marginLeft:'10px'}} variant='contained' color='secondary'>Update Product</ButtonMUI>
+            user && user.isAdmin && <MyModal handleUpdate={handleUpdateProduct} updateForm={true} productInfo={product}/>
           }
         </Box>
       </Box>

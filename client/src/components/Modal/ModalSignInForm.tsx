@@ -2,7 +2,7 @@ import { Box, Button, FormControl, InputLabel, OutlinedInput, InputAdornment, Ic
 import { Lock } from "@material-ui/icons";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import './ModalForm.scss'
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 import { login } from "../../apiCalls";
 import { useDispatch } from "react-redux";
 const style = {

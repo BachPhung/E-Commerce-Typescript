@@ -12,6 +12,7 @@ import {
     REGISTER
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import { getToken } from '../requestMethod'
 
 const persistConfig = {
     key:'root',
@@ -39,3 +40,5 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>
 
 export let persistor = persistStore(store)
+
+store.subscribe(()=>console.log(getToken()))

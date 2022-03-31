@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ClickAwayListener, Button, Grow, Paper, Popper, MenuList, MenuItem as MenuItemMUI, Avatar as AvatarMui } from '@material-ui/core';
 import Stack from '@mui/material/Stack';
 import { MenuItem } from './Navbar';
@@ -6,11 +6,26 @@ import { MenuItem } from './Navbar';
 export const Avatar = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
-
+  const [option, setOption] = useState(0)
+  useEffect(()=>{
+    switch(option){
+      case 1: {
+        break;
+      }
+      case 2: {
+        break;
+      }
+      case 3: {
+        window.localStorage.removeItem('persist:root');
+        window.location.reload();
+        break;
+      }
+    }
+  },[option])
   const handleToggle = () => {
     setOpen((preVOpen) => !preVOpen);
   };
-
+  
   const handleClose = (event: React.MouseEvent<Document | HTMLLIElement>) => {
     if (anchorRef.current && anchorRef?.current?.contains(event.target as Node)) {
       return;
@@ -73,7 +88,10 @@ export const Avatar = () => {
                     >
                       <MenuItemMUI onClick={handleClose}>Profile</MenuItemMUI>
                       <MenuItemMUI onClick={handleClose}>My account</MenuItemMUI>
-                      <MenuItemMUI onClick={handleClose}>Logout</MenuItemMUI>
+                      <MenuItemMUI onClick={(e)=>{
+                        handleClose(e);
+                        setOption(3)
+                        }}>Logout</MenuItemMUI>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>

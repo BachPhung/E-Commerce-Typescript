@@ -3,8 +3,16 @@ import {Login} from '@mui/icons-material'
 import { useState } from "react";
 import { ModalSignInForm } from "./ModalSignInForm";
 import { ModalSignUpForm } from "./ModalSignUpForm";
+import { FetchProduct } from "../ProductList/ProductList";
+import { ModalUpdateProductForm } from "./ModalUpdateProductForm";
 
-export const MyModal = () => {
+interface ModalProps {
+  updateForm?: boolean,
+  productInfo: FetchProduct,
+  handleUpdate?: any
+}
+
+export const MyModal = (props: ModalProps) => {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(false)
   const handleOpen = () => setOpen(true);
@@ -13,7 +21,12 @@ export const MyModal = () => {
   return (
     <div>
       <Button onClick={handleOpen} className='btn-navbar' variant='outlined'>
-        Sign in 
+        {
+          props.updateForm && 'Update Product'
+        }
+        {
+          (props.updateForm === false)  && "Sign In" 
+        }
         <span style={{
           marginLeft:'3px',
           height: "46px",
@@ -29,11 +42,16 @@ export const MyModal = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
+        <>
         {
-          form
+          (form && !props.updateForm)
           ? <Box><ModalSignUpForm handleChangeForm={handleChangeForm}/></Box>
           : <Box><ModalSignInForm handleChangeForm={handleChangeForm}/></Box>
         }
+        {
+          props.updateForm && <Box><ModalUpdateProductForm handleUpdate={props.handleUpdate} product={props.productInfo}/></Box>
+        }
+        </>
       </Modal>
     </div>
   )

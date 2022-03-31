@@ -2,7 +2,6 @@ import { Product } from "../Product/Product"
 import { Box } from "@mui/material"
 import { useEffect, useState } from "react"
 import { publicRequest } from "../../requestMethod"
-import { Link } from "react-router-dom"
 
 interface Filter {
   field: string,
