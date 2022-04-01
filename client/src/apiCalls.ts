@@ -1,5 +1,6 @@
 import { publicRequest } from "./requestMethod";
 import { loginFailure, loginStart, loginSuccess } from "./redux/userSlice";
+import { fetchProductFailure, fetchProductSuccess, fetchProductStart } from "./redux/productSlice";
 
 export type LoginCredential = {
     username: string,
@@ -15,5 +16,16 @@ export const login = async (dispatch: any, userCredential: LoginCredential) => {
     }
     catch(err){
         dispatch(loginFailure(err))
+    }
+}
+
+export const fetchProduct = async (dispatch: any) => {
+    dispatch(fetchProductStart);
+    try{
+        const res = await publicRequest.get('/products')
+        dispatch(fetchProductSuccess(res.data))
+    }
+    catch(err){
+        dispatch(fetchProductFailure(err))
     }
 }

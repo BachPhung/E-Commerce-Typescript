@@ -7,19 +7,14 @@ type currentUserType = {
     username:string,
     isAdmin:boolean
 }
-export type initialUserStateType = {
-    currentUser: null | currentUserType,
-    isFetching: boolean,
-    error: null | string
-}
 
 const userSlice = createSlice({
     name: 'user',
     initialState: {
-        currentUser:null,
+        currentUser:null as currentUserType | null,
         isFetching:false,
         error:null
-    } as initialUserStateType,
+    },
     reducers: {
         loginStart: (state) => {
             state.isFetching =true

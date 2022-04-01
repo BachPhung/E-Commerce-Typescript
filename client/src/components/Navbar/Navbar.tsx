@@ -60,7 +60,6 @@ interface NavBarProps {
   pages?: string
 }
 export const Navbar = (props: NavBarProps) => {
-  const productByPass = useSelector((state:RootState) => state.cart.products[0])
   let quantity = useSelector((state: RootState) => state.cart.quantity)
   let user = useSelector((state: RootState) => state.user.currentUser)
   return (
@@ -85,7 +84,7 @@ export const Navbar = (props: NavBarProps) => {
           }
           {
             !user
-              ? <MenuItem><MyModal updateForm={false} productInfo={productByPass} /></MenuItem>
+              ? <MenuItem><MyModal updateForm={false} /></MenuItem>
               : <MenuItem><Avatar /></MenuItem>
           }
           {

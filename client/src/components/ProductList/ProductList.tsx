@@ -1,45 +1,18 @@
 import { Product } from "../Product/Product"
 import { Box } from "@mui/material"
 import { useEffect, useState } from "react"
-import { publicRequest } from "../../requestMethod"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchProduct } from "../../apiCalls"
+import { RootState } from "../../redux/store"
+import { FetchProduct, ProductListProps } from "../../types"
 
-interface Filter {
-  field: string,
-  cat: string,
-  search: string
-}
-
-interface ProductListProps {
-  filter: Filter
-}
-
-export interface FetchProduct {
-  _id: string,
-  categories: string[],
-  img: string[],
-  title: string,
-  price: number,
-  color: string[],
-  size: string[],
-  desc: string
-}
-
-export interface CartProduct extends FetchProduct {
-  quantity: number,
-}
 export const ProductList = ({ filter }: ProductListProps) => {
-  const [products, setProducts] = useState<FetchProduct[]>([])
+  const products = useSelector((state: RootState) => state.product.products)
+  const dispatch = useDispatch()
   const [filteredProducts, setFilteredProducts] = useState<FetchProduct[]>([])
   useEffect(() => {
     const getProducts = async () => {
-      try {
-        const res = await publicRequest.get('/products')
-        setProducts(res.data)
-        setFilteredProducts(res.data)
-      }
-      catch (err) {
-        console.log(err)
-      }
+      await fetchProduct(dispatch)
     }
     getProducts()
   }, [])
@@ -50,7 +23,9 @@ export const ProductList = ({ filter }: ProductListProps) => {
           products.filter((product) => {
             const lowerCase = product.categories.map(cat => cat.toLowerCase())
             const filterArr = ['shoes']
-            return !filterArr.every(ai => lowerCase.includes(ai)) && product.title.toLowerCase().includes(filter.search.toLowerCase())
+            return !filterArr.every(
+              ai => lowerCase.includes(ai)) 
+              && product.title.toLowerCase().includes(filter.search.toLowerCase())
           })
         )
       }
@@ -76,13 +51,13 @@ export const ProductList = ({ filter }: ProductListProps) => {
         })
       )
     }
-  }, [filter, products])
+  }, [filter])
   return (
     <Box flexWrap="wrap" display='flex' justifyContent='flex-start' sx={{ minHeight: '400px', mt: 3 }} >
       {
         filteredProducts.map(product => {
           return (
-              <Product key={product._id} product={product} />
+            <Product key={product._id} product={product} />
           )
         })
       }

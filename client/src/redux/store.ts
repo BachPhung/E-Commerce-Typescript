@@ -1,6 +1,8 @@
 import {configureStore, combineReducers} from '@reduxjs/toolkit'
 import cartReducer from './cartSlice'
 import userReducer from './userSlice'
+import productReducer from './productSlice'
+
 import {
     persistStore,
     persistReducer,
@@ -12,7 +14,6 @@ import {
     REGISTER
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { getToken } from '../requestMethod'
 
 const persistConfig = {
     key:'root',
@@ -22,7 +23,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     user: userReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    product: productReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -38,7 +40,4 @@ export const store = configureStore({
 })
 
 export type RootState = ReturnType<typeof store.getState>
-
 export let persistor = persistStore(store)
-
-store.subscribe(()=>console.log(getToken()))

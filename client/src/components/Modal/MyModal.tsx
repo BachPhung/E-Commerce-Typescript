@@ -3,13 +3,10 @@ import {Login} from '@mui/icons-material'
 import { useState } from "react";
 import { ModalSignInForm } from "./ModalSignInForm";
 import { ModalSignUpForm } from "./ModalSignUpForm";
-import { FetchProduct } from "../ProductList/ProductList";
 import { ModalUpdateProductForm } from "./ModalUpdateProductForm";
 
 interface ModalProps {
   updateForm?: boolean,
-  productInfo: FetchProduct,
-  handleUpdate?: any
 }
 
 export const MyModal = (props: ModalProps) => {
@@ -48,9 +45,7 @@ export const MyModal = (props: ModalProps) => {
           ? <Box><ModalSignUpForm handleChangeForm={handleChangeForm}/></Box>
           : <Box><ModalSignInForm handleChangeForm={handleChangeForm}/></Box>
         }
-        {
-          props.updateForm && <Box><ModalUpdateProductForm handleUpdate={props.handleUpdate} product={props.productInfo}/></Box>
-        }
+        { props.updateForm && <Box><ModalUpdateProductForm/></Box> }
         </>
       </Modal>
     </div>

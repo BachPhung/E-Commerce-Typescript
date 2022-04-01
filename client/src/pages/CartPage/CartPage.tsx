@@ -5,7 +5,7 @@ import { addQuantity, decreaseQuantity } from '../../redux/cartSlice'
 import styled from 'styled-components'
 import { RootState } from '../../redux/store'
 import { Add, Remove } from '@material-ui/icons';
-import { CartProduct } from '../../components/ProductList/ProductList'
+import { CartProduct } from '../../types'
 
 const ProductDetail = styled.div`
   flex: 2;
@@ -62,24 +62,24 @@ const SummaryItem = styled.div`
     justify-content: space-between;   
 `
 type SummaryItemTextProps = {
-  type?:string
+  type?: string
 }
 const SummaryItemText = styled.span`
-    font-weight: ${(p:SummaryItemTextProps) => p.type  === 'total' ? "500" : "300"};
-    font-size:${(p:SummaryItemTextProps) => p.type === 'total' ? "28px" : "22px"};
+    font-weight: ${(p: SummaryItemTextProps) => p.type === 'total' ? "500" : "300"};
+    font-size:${(p: SummaryItemTextProps) => p.type === 'total' ? "28px" : "22px"};
 `
 const SummaryItemPrice = styled.span`
-    font-weight: ${(p:SummaryItemTextProps) => p.type  === 'total' ? "500" : "300"};
-    font-size:${(p:SummaryItemTextProps) => p.type === 'total' ? "28px" : "22px"};
+    font-weight: ${(p: SummaryItemTextProps) => p.type === 'total' ? "500" : "300"};
+    font-size:${(p: SummaryItemTextProps) => p.type === 'total' ? "28px" : "22px"};
 `
 
 export const CartPage = () => {
   const cart = useSelector((state: RootState) => state.cart)
   const dispatch = useDispatch()
-  const handleAddQuantity = (product: CartProduct) =>{
+  const handleAddQuantity = (product: CartProduct) => {
     dispatch(addQuantity(product))
   }
-  const handleDescreaseQuantity = (product: CartProduct) =>{
+  const handleDescreaseQuantity = (product: CartProduct) => {
     dispatch(decreaseQuantity(product))
   }
   return (
@@ -91,7 +91,7 @@ export const CartPage = () => {
         <Box flex={3}>
           {cart.products.map(product => {
             return (
-              <Box display='flex' justifyContent='space-between' borderBottom={'1px solid black'} marginBottom={'50px'}>
+              <Box key={product._id + Math.random()} display='flex' justifyContent='space-between' borderBottom={'1px solid black'} marginBottom={'50px'}>
                 <Box flex={2}>
                   <ProductDetail>
                     <Image src={product.img[0]} />
@@ -102,14 +102,13 @@ export const CartPage = () => {
                       <ProductSize><b>Size: </b>{product.size}</ProductSize>
                     </Details>
                   </ProductDetail>
-
                 </Box>
                 <Box flex={2}>
                   <PriceDetails>
                     <ProductAmountContainer>
-                      <Add style={{ cursor: "pointer" }} onClick={()=>handleAddQuantity(product)}></Add>
+                      <Add style={{ cursor: "pointer" }} onClick={() => handleAddQuantity(product)}></Add>
                       <ProductAmount>{product.quantity}</ProductAmount>
-                      <Remove style={{ cursor: "pointer" }} onClick={()=>handleDescreaseQuantity(product)}/>
+                      <Remove style={{ cursor: "pointer" }} onClick={() => handleDescreaseQuantity(product)} />
                     </ProductAmountContainer>
                     <ProductPrice>€ {(product.price * product.quantity).toFixed(2)}</ProductPrice>
                   </PriceDetails>
@@ -124,14 +123,18 @@ export const CartPage = () => {
             <SummaryItemText>Subtotal</SummaryItemText>
             <SummaryItemPrice>{cart.total}</SummaryItemPrice>
           </SummaryItem>
-          <SummaryItem>
-            <SummaryItemText>Estimated Shipping</SummaryItemText>
-            <SummaryItemPrice>5.90</SummaryItemPrice>
-          </SummaryItem>
-          <SummaryItem>
-            <SummaryItemText>Shipping Discount</SummaryItemText>
-            <SummaryItemPrice>-5.90</SummaryItemPrice>
-          </SummaryItem>
+          {cart.total != 0 &&
+            <>
+              <SummaryItem>
+                <SummaryItemText>Estimated Shipping</SummaryItemText>
+                <SummaryItemPrice>5.90</SummaryItemPrice>
+              </SummaryItem>
+              <SummaryItem>
+                <SummaryItemText>Shipping Discount</SummaryItemText>
+                <SummaryItemPrice>-5.90</SummaryItemPrice>
+              </SummaryItem>
+            </>
+          }
           <Divider />
           <SummaryItem>
             <SummaryItemText type='total'>Total</SummaryItemText>
