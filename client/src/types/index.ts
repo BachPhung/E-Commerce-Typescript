@@ -26,3 +26,16 @@ export interface CartProduct extends FetchProduct {
 export type ProductParams = {
   id: string
 }
+
+export interface ModalSignFormProps {
+  handleChangeForm: () => void
+}
+
+export interface SignUpForm {
+  first_name: string,
+  last_name: string,
+  username: string,
+  password: string,
+  repeatPassword?: string,
+  showPassword?: boolean
+}

@@ -5,24 +5,10 @@ import './ModalForm.scss'
 import React, { useState } from "react";
 import { login } from "../../apiCalls";
 import { useDispatch } from "react-redux";
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 600,
-  minHeight: 450,
-  bgcolor: 'background.paper',
-  border: 'none',
-  boxShadow: 40,
-  p: 4,
-};
+import { style } from "./style";
+import { ModalSignFormProps } from "../../types";
 
-interface ModalSignInFormProps {
-  handleChangeForm: () => void
-}
-
-export const ModalSignInForm = (props: ModalSignInFormProps) => {
+export const ModalSignInForm = (props: ModalSignFormProps) => {
   const dispatch = useDispatch()
   const [values, setValues] = useState({
     password: '',
@@ -42,7 +28,6 @@ export const ModalSignInForm = (props: ModalSignInFormProps) => {
   };
   const handleSubmit = async (e: React.SyntheticEvent) =>{
     e.preventDefault()
-    console.log('form')
     try{
       let {showPassword, ...loginCredential} = values
       await login(dispatch, loginCredential)

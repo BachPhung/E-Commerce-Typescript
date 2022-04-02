@@ -1,6 +1,7 @@
 import { publicRequest } from "./requestMethod";
 import { loginFailure, loginStart, loginSuccess } from "./redux/userSlice";
 import { fetchProductFailure, fetchProductSuccess, fetchProductStart } from "./redux/productSlice";
+import { SignUpForm } from "./types";
 
 export type LoginCredential = {
     username: string,
@@ -28,4 +29,9 @@ export const fetchProduct = async (dispatch: any) => {
     catch(err){
         dispatch(fetchProductFailure(err))
     }
+}
+
+export const register = async (signupCredential: SignUpForm)=>{
+    const res = await publicRequest.post('/auth/register', signupCredential)
+    return res.data
 }
