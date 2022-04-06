@@ -11,21 +11,20 @@ import './ProductList.scss'
 
 const drawerWidth = 200;
 
-
 export const ProductListPage = () => {
   const [filter, setFilter] = useState({
     field: 'new',
     cat: 'view all',
     search: ''
   })
-  const handleChangeCate = (field: string, cat: string) => {
+  const handleChangeCate = (field: string, cat: string): void => {
     setFilter({
       ...filter,
       field: field,
       cat: cat
     })
   }
-  const handleChangeInput = (searchInput: string) => {
+  const handleChangeInput = (searchInput: string): void => {
     setFilter({
       ...filter,
       search: searchInput

@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { ClickAwayListener, Button, Grow, Paper, Popper, MenuList, MenuItem as MenuItemMUI, Avatar as AvatarMui } from '@material-ui/core';
 import Stack from '@mui/material/Stack';
 import { MenuItem } from './Navbar';
+import { useAppDispatch } from '../../redux/hooks';
+import { logOut } from '../../redux/userSlice';
 
 export const Avatar = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
   const [option, setOption] = useState(0)
+  const dispatch = useAppDispatch()
   useEffect(()=>{
     switch(option){
       case 1: {
@@ -16,12 +19,11 @@ export const Avatar = () => {
         break;
       }
       case 3: {
-        window.localStorage.removeItem('persist:root');
-        window.location.reload();
+        dispatch(logOut())
         break;
       }
     }
-  },[option])
+  },[option, dispatch])
   const handleToggle = () => {
     setOpen((preVOpen) => !preVOpen);
   };

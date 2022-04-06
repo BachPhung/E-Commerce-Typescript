@@ -123,7 +123,7 @@ export const CartPage = () => {
             <SummaryItemText>Subtotal</SummaryItemText>
             <SummaryItemPrice>{cart.total}</SummaryItemPrice>
           </SummaryItem>
-          {cart.total != 0 &&
+          {cart.total !== 0 &&
             <>
               <SummaryItem>
                 <SummaryItemText>Estimated Shipping</SummaryItemText>

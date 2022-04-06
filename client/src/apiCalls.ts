@@ -1,7 +1,7 @@
 import { publicRequest } from "./requestMethod";
 import { loginFailure, loginStart, loginSuccess } from "./redux/userSlice";
 import { fetchProductFailure, fetchProductSuccess, fetchProductStart } from "./redux/productSlice";
-import { SignUpForm } from "./types";
+import { FetchProduct, SignUpForm } from "./types";
 
 export type LoginCredential = {
     username: string,
@@ -13,14 +13,13 @@ export const login = async (dispatch: any, userCredential: LoginCredential) => {
     try{
         const res = await publicRequest.post('/auth/login', userCredential)
         dispatch(loginSuccess(res.data))
-        window.location.reload()
     }
     catch(err){
         dispatch(loginFailure(err))
     }
 }
 
-export const fetchProduct = async (dispatch: any) => {
+export const fetchProducts = async (dispatch: any) => {
     dispatch(fetchProductStart);
     try{
         const res = await publicRequest.get('/products')
@@ -29,6 +28,10 @@ export const fetchProduct = async (dispatch: any) => {
     catch(err){
         dispatch(fetchProductFailure(err))
     }
+}
+
+export const fetchProduct =  async (id:string | undefined): Promise<FetchProduct> => {
+    return (await publicRequest.get(`/products/${id}`)).data
 }
 
 export const register = async (signupCredential: SignUpForm)=>{

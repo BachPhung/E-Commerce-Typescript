@@ -2,25 +2,25 @@ import { AppBar, Box, Card, CardMedia, Button as ButtonMUI } from '@mui/material
 import { useEffect, useState } from 'react'
 import { Navbar } from '../../components/Navbar/Navbar'
 import { FetchProduct, ProductParams } from '../../types'
-import { publicRequest, userRequest } from '../../requestMethod'
+import { userRequest } from '../../requestMethod'
 import { Add, Remove } from '@material-ui/icons';
-import { useDispatch, useSelector } from 'react-redux'
 import { addProduct } from '../../redux/cartSlice'
 import './ProductPage.scss'
 import { useParams, useNavigate } from 'react-router-dom'
-import { RootState } from '../../redux/store'
 import { MyModal } from '../../components/Modal/MyModal'
 import {
   Title, Desc, Price, FilterContainer, Filter, FilterTitle,
   FilterColor, FilterSize, FilterSizeOption, AddContainer, AmountContainer, Amount, Button
 } from './ProductPageComponent'
+import { fetchProduct } from '../../apiCalls'
+import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 export const ProductPage = () => {
   let navigate = useNavigate()
-  let products = useSelector((state: RootState) => state.product.products)
+  let products = useAppSelector(state => state.product.products)
   const id: string | undefined = useParams<ProductParams>().id
-  const dispatch = useDispatch()
-  let user = useSelector((state: RootState) => state.user.currentUser)
+  const dispatch = useAppDispatch()
+  let user = useAppSelector(state => state.user.currentUser)
   const [product, setProduct] = useState<FetchProduct | null>(null)
   const [quantity, setQuantity] = useState(1)
   const [color, setColor] = useState('')
@@ -28,14 +28,17 @@ export const ProductPage = () => {
   useEffect(() => {
     const getProduct = async () => {
       if (products.length > 0) {
-        setProduct(products.filter(p => p._id === id)[0])
+        const product = products.filter(p => p._id === id)[0]
+        setProduct(product)
+        setColor(product.color[0])
+        setSize(product.size[0])
       }
       else {
         try {
-          const res = await publicRequest.get(`/products/${id}`)
-          setProduct(res.data)
-          setColor(res.data.color[0])
-          setSize(res.data.size[0])
+          const fetchedProduct = await fetchProduct(id)
+          setProduct(fetchedProduct)
+          setColor(fetchedProduct.color[0])
+          setSize(fetchedProduct.size[0])
         }
         catch (err) {
           console.log(err);
@@ -43,7 +46,7 @@ export const ProductPage = () => {
       }
     }
     getProduct()
-  }, [id,products])
+  }, [id, products])
 
   // ADD PRODDUCT TO CART
   const handleAddProduct = () => {
@@ -117,16 +120,22 @@ export const ProductPage = () => {
             )
           })}
           </Desc>
-          {
-            user && user.isAdmin && <ButtonMUI onClick={() => {
-              if (window.confirm('Do you wanna delete this product')) {
-                handleDeleteProduct()
+          <div style={{ display: 'flex' }}>
+            <div style={{ marginRight: '15px' }}>
+              {
+                user && user.isAdmin && <ButtonMUI onClick={() => {
+                  if (window.confirm('Do you wanna delete this product')) {
+                    handleDeleteProduct()
+                  }
+                }} variant='contained' color='secondary'>Remove Product</ButtonMUI>
               }
-            }} variant='contained' color='secondary'>Remove Product</ButtonMUI>
-          }
-          {
-            user && user.isAdmin && <MyModal updateForm={true} />
-          }
+            </div>
+            <div>
+              {
+                user && user.isAdmin && <MyModal updateForm={true} />
+              }
+            </div>
+          </div>
         </Box>
       </Box>
     </div >

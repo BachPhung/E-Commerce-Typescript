@@ -8,7 +8,7 @@ export const ScrollToTop = () => {
   const [show, setShow] = useState(false)
   const showBelow = 250   // set the offside to show button
   const handleScroll = () => {
-    if (window.pageYOffset > showBelow)
+    if (window.scrollY > showBelow)
       setShow(true)
     else
       setShow(false)

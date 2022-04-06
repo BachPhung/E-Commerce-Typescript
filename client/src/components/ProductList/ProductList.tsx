@@ -1,30 +1,30 @@
 import { Product } from "../Product/Product"
 import { Box } from "@mui/material"
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { fetchProduct } from "../../apiCalls"
-import { RootState } from "../../redux/store"
+import { fetchProducts } from "../../apiCalls"
 import { FetchProduct, ProductListProps } from "../../types"
+import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 
 export const ProductList = ({ filter }: ProductListProps) => {
-  const products = useSelector((state: RootState) => state.product.products)
-  const dispatch = useDispatch()
+  const products = useAppSelector(state => state.product.products)
+  const dispatch = useAppDispatch()
   const [filteredProducts, setFilteredProducts] = useState<FetchProduct[]>([])
   useEffect(() => {
     const getProducts = async () => {
-      await fetchProduct(dispatch)
+      await fetchProducts(dispatch)
     }
     getProducts()
-  }, [])
+  }, [dispatch])
   useEffect(() => {
     if (filter.field === 'new') {
       if (filter.cat !== 'view all') {
+        console.log('Process filter')
         setFilteredProducts(
           products.filter((product) => {
             const lowerCase = product.categories.map(cat => cat.toLowerCase())
             const filterArr = ['shoes']
             return !filterArr.every(
-              ai => lowerCase.includes(ai)) 
+              ai => lowerCase.includes(ai))
               && product.title.toLowerCase().includes(filter.search.toLowerCase())
           })
         )
@@ -51,7 +51,7 @@ export const ProductList = ({ filter }: ProductListProps) => {
         })
       )
     }
-  }, [filter])
+  }, [filter, products])
   return (
     <Box flexWrap="wrap" display='flex' justifyContent='flex-start' sx={{ minHeight: '400px', mt: 3 }} >
       {

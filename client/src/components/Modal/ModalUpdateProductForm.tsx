@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, InputLabel, OutlinedInput, TextareaAutosize } from "@mui/material";
 import { Lock } from "@material-ui/icons";
 import './ModalForm.scss'
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { FetchProduct, ProductParams } from "../../types";
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
@@ -27,6 +27,7 @@ export const ModalUpdateProductForm = () => {
   const id: string | undefined = useParams<ProductParams>().id
   const dispatch = useDispatch()
   const product = useSelector((state: RootState) => state.product.products.filter(p => p._id === id)[0])
+    
   const [values, setValues] = useState({
     title: product.title,
     price: product.price,
@@ -35,7 +36,7 @@ export const ModalUpdateProductForm = () => {
     color: product.color.toString()
   });
 
-  const handleChange = (prop: string) => (event: any) => {
+  const handleChange = (prop: string) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setValues({ ...values, [prop]: event.target.value });
   };
   const handleUpdate = async (updatedInfo: Partial<FetchProduct>) => {

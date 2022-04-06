@@ -7,18 +7,21 @@ export type initialCartStateType = {
   total: number
 }
 
+const cart = JSON.parse(localStorage.getItem('cart') || '{}') as initialCartStateType
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
-    products: [],
-    quantity: 0,
-    total: 0
+    products: cart.products || [],
+    quantity: cart.quantity || 0,
+    total: cart.total || 0
   } as initialCartStateType,
   reducers: {
     addProduct: (state, action) => {
       state.quantity += action.payload.quantity
       state.products.push(action.payload)
       state.total +=  Math.round((action.payload.price * action.payload.quantity * 100))/100
+      localStorage.setItem('cart', JSON.stringify(state))
     },
     addQuantity: (state, action) => {
       let productPayload:CartProduct = action.payload
@@ -27,6 +30,7 @@ const cartSlice = createSlice({
       state.products[index].quantity += 1
       state.total += action.payload.price
       state.total = Math.round(state.total*100)/100
+      localStorage.setItem('cart', JSON.stringify(state))
     },
     decreaseQuantity: (state, action) => {
       state.quantity += -1
@@ -36,6 +40,7 @@ const cartSlice = createSlice({
       state.total -= action.payload.price
       state.total = Math.round(state.total*100)/100
       state.products = state.products.filter(product => product.quantity > 0)
+      localStorage.setItem('cart', JSON.stringify(state))
     }
   }
 })

@@ -88,7 +88,12 @@ export const Navbar = (props: NavBarProps) => {
               : <MenuItem><Avatar /></MenuItem>
           }
           {
-            user && user.isAdmin && <MenuItem><Button variant='contained' color='secondary'>Add Product</Button></MenuItem>
+            user && user.isAdmin &&
+            <MenuItem>
+              <Link className='link' to='/add-product'>
+                <Button variant='contained' color='secondary'>Add Product</Button>
+              </Link>
+            </MenuItem>
           }
           {
             user && user.isAdmin && <MenuItem><Button variant='contained' color='secondary'>Manage Users</Button></MenuItem>
