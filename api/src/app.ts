@@ -14,7 +14,10 @@ import requestLogger from './middlewares/logger';
 
 const app = express();
 app.use(express.json());
-app.use(cors())
+app.use(cors({
+  origin: `http://localhost:3000`,  //react's address
+  credentials: true
+}));
 
 mongoose.connect(config.MONGODB_URI!, {
   useNewUrlParser: true,
