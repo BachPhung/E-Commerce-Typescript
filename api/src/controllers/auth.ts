@@ -38,6 +38,9 @@ export const userRegister = async (req: Request, res: Response, next: NextFuncti
 
 export const userLogin = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        if(!req.body.username || !req.body.password){
+            return res.status(400).json('username or password is missing')
+        }
         const user = await UserServ.findByCredential({ username: req.body.username })
         const passwordCorrect = user === null
             ? false

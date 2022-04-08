@@ -51,6 +51,9 @@ exports.userRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        if (!req.body.username || !req.body.password) {
+            return res.status(400).json('username or password is missing');
+        }
         const user = yield users_1.default.findByCredential({ username: req.body.username });
         const passwordCorrect = user === null
             ? false
