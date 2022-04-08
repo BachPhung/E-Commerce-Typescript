@@ -43,12 +43,12 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
             ? false
             : await bcrypt.compare(req.body.password, user.password);
         if (!(user && passwordCorrect)) {
-            res.status(401).json({
+            return res.status(401).json({
                 error: 'invalid username or password'
             })
         }
         if(user.isBanned){
-            res.status(401).json({
+            return res.status(401).json({
                 error: 'Your account is banned'
             })
         }
@@ -58,7 +58,7 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
                 isAdmin: user.isAdmin
             }, tokenSecret, { expiresIn: '2d' });
             const { first_name, last_name, username, isAdmin } = user;
-            res.status(200).json({
+            return res.status(200).json({
                 accessToken,
                 first_name,
                 last_name,
