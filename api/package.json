@@ -25,6 +25,7 @@
     "lint-staged": "^10.0.8",
     "mongoose": "^5.11.15",
     "mongoose-unique-validator": "^3.0.0",
+    "cross-env": "^7.0.3",
     "stripe": "^8.210.0"
   },
   "devDependencies": {
