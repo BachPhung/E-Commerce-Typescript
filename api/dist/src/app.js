@@ -18,7 +18,10 @@ const errorHandler_1 = __importDefault(require("./middlewares/errorHandler"));
 const logger_1 = __importDefault(require("./middlewares/logger"));
 const app = express_1.default();
 app.use(express_1.default.json());
-app.use(cors_1.default());
+app.use(cors_1.default({
+    origin: `http://bachphung-ecommerce.com`,
+    credentials: true
+}));
 mongoose_1.default.connect(config_1.default.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

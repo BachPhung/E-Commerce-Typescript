@@ -22,7 +22,7 @@ const saltRound = Number(config_1.default.SALTROUNDS);
 const tokenSecret = config_1.default.TOKENSECRET;
 exports.userRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { first_name, last_name, username, password, email } = req.body;
+        const { first_name, last_name, username, password } = req.body;
         if (username.length < 8 || password.length < 8) {
             return res.status(401).json({
                 error: 'Username or Password must be at least 8 chars long'
@@ -33,8 +33,7 @@ exports.userRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
                 first_name,
                 last_name,
                 username,
-                password: yield bcrypt_1.default.hash(password, saltRound),
-                email
+                password: yield bcrypt_1.default.hash(password, saltRound)
             });
             console.log("savedUser", savedUser);
             yield users_1.default.create(savedUser);
@@ -43,7 +42,7 @@ exports.userRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
     catch (error) {
         if (error instanceof Error) {
-            res.status(400).json({ error: "username or email has already existed" });
+            res.status(400).json({ error: error.message });
         }
         else {
             next(error);
@@ -57,8 +56,13 @@ exports.userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             ? false
             : yield bcrypt_1.default.compare(req.body.password, user.password);
         if (!(user && passwordCorrect)) {
-            res.status(401).json({
+            return res.status(401).json({
                 error: 'invalid username or password'
+            });
+        }
+        if (user.isBanned) {
+            return res.status(401).json({
+                error: 'Your account is banned'
             });
         }
         if (tokenSecret) {
@@ -66,12 +70,13 @@ exports.userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
                 id: user._id,
                 isAdmin: user.isAdmin
             }, tokenSecret, { expiresIn: '2d' });
-            const { first_name, last_name, username } = user;
-            res.status(200).json({
+            const { first_name, last_name, username, isAdmin } = user;
+            return res.status(200).json({
                 accessToken,
                 first_name,
                 last_name,
-                username
+                username,
+                isAdmin
             });
         }
     }

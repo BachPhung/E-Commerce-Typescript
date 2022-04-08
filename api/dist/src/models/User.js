@@ -22,10 +22,6 @@ const UserSChema = new mongoose_1.Schema({
         type: String,
         minlength: 8
     },
-    email: {
-        type: String,
-        unique: true
-    },
     avatar: {
         type: String,
         default: ""

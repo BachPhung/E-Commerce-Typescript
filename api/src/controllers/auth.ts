@@ -60,16 +60,15 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
             const { first_name, last_name, username, isAdmin } = user;
             return res.status(200).json({
                 accessToken,
-                first_name
-                // ,
-                // last_name,
-                // username,
-                // isAdmin: isAdmin
+                first_name,
+                last_name,
+                username,
+                isAdmin
             })
         }
     }
     catch (err) {
         res.status(400).json('eoor')
-        next(err)
+        //next(err)
     }
 }
