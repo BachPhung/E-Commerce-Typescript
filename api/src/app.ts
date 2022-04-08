@@ -15,7 +15,7 @@ import requestLogger from './middlewares/logger';
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: `http://localhost:3000`,  //react's address
+  origin: `http://bachphung-ecommerce.com`,  //react's address
   credentials: true
 }));
 
