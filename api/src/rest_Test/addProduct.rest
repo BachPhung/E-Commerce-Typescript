@@ -1,6 +1,6 @@
 POST http://localhost:5000/api/products
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMzkyMWQyZjRjYWM2NGQxOGQyZmQ1YSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0ODAwMDQwNSwiZXhwIjoxNjQ4MTczMjA1fQ.S9oCRZYK3Uw_eZPqaV2b-JtjgP0aqkZMilkXonNxFVQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMzkyMWQyZjRjYWM2NGQxOGQyZmQ1YSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0ODY1NTg4MywiZXhwIjoxNjQ4ODI4NjgzfQ.rsUCqW4iGqYXoEdN-nvKuB-67yV2C6uLlO4FV7c7nts
 
 {
     "title": "Timberland Core Tree Logo hoodie in dark blue",

@@ -1,7 +1,7 @@
-import { publicRequest } from "./requestMethod";
+import { publicRequest, userRequest } from "./requestMethod";
 import { loginFailure, loginStart, loginSuccess } from "./redux/userSlice";
 import { fetchProductFailure, fetchProductSuccess, fetchProductStart } from "./redux/productSlice";
-import { FetchProduct, SignUpForm } from "./types";
+import { FetchProduct, FetchUser, SignUpForm } from "./types";
 
 export type LoginCredential = {
     username: string,
@@ -36,5 +36,10 @@ export const fetchProduct =  async (id:string | undefined): Promise<FetchProduct
 
 export const register = async (signupCredential: SignUpForm)=>{
     const res = await publicRequest.post('/auth/register', signupCredential)
+    return res.data
+}
+
+export const getAllUser = async (): Promise<FetchUser[]> => {
+    const res = await userRequest.get('/users')
     return res.data
 }

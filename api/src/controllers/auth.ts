@@ -8,7 +8,7 @@ const saltRound = Number(config.SALTROUNDS)
 const tokenSecret = config.TOKENSECRET;
 export const userRegister = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { first_name, last_name, username, password, email } = req.body
+        const { first_name, last_name, username, password} = req.body
         if(username.length < 8 || password.length < 8 ) {
             return res.status(401).json({
                 error: 'Username or Password must be at least 8 chars long'
@@ -19,8 +19,7 @@ export const userRegister = async (req: Request, res: Response, next: NextFuncti
                 first_name,
                 last_name,
                 username,
-                password: await bcrypt.hash(password, saltRound),
-                email
+                password: await bcrypt.hash(password, saltRound)
             });
             console.log("savedUser", savedUser);
 
@@ -30,7 +29,7 @@ export const userRegister = async (req: Request, res: Response, next: NextFuncti
     }
     catch (error) {
         if (error instanceof Error) {
-            res.status(400).json({error: "username or email has already existed"})
+            res.status(400).json({error: error.message})
         } else {
             next(error)
         }
@@ -48,17 +47,23 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
                 error: 'invalid username or password'
             })
         }
+        if(user.isBanned){
+            res.status(401).json({
+                error: 'Your account is banned'
+            })
+        }
         if (tokenSecret) {
             const accessToken = jwt.sign({
                 id: user._id,
                 isAdmin: user.isAdmin
             }, tokenSecret, { expiresIn: '2d' });
-            const { first_name, last_name, username } = user;
+            const { first_name, last_name, username, isAdmin } = user;
             res.status(200).json({
                 accessToken,
                 first_name,
                 last_name,
-                username
+                username,
+                isAdmin
             })
         }
     }

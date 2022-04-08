@@ -1,6 +1,6 @@
 import UserServ from "../services/users"
 import { NextFunction, Request, Response } from 'express';
-import { UserDocument, SimpleUser } from "../models/User";
+import { UserDocument } from "../models/User";
 
 //PUT /users/:id
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -51,7 +51,7 @@ export const findAll = async (req: Request, res: Response, next: NextFunction) =
     }
 }
 
-//POST /users/banned/:id
+//PUT /users/banned/:id
 export const bannedUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const foundUser = await UserServ.bannedUser(req.params.id);

@@ -5,7 +5,6 @@ type User = {
     last_name: string,
     username: string,
     password:string,
-    email:string,
     avatar?:string,
     isAdmin: boolean,
     isBanned: boolean
@@ -34,10 +33,6 @@ const UserSChema = new Schema<UserDocument>({
     password:{
         type:String,
         minlength:8
-    },
-    email:{
-        type:String,
-        unique:true
     },
     avatar:{
         type:String,

@@ -96,7 +96,12 @@ export const Navbar = (props: NavBarProps) => {
             </MenuItem>
           }
           {
-            user && user.isAdmin && <MenuItem><Button variant='contained' color='secondary'>Manage Users</Button></MenuItem>
+            user && user.isAdmin &&
+            <MenuItem>
+              <Link className='link' to='/user-stats'>
+                <Button variant='contained' color='secondary'>Manage Users</Button>
+              </Link>
+            </MenuItem>
           }
           {
             user && <MenuItem style={{ color: 'black', fontSize: '16px' }}>{`Hi, ${user.first_name} ${user.last_name}`}</MenuItem>

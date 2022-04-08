@@ -5,6 +5,9 @@ import { userRequest } from '../../requestMethod'
 import { Navbar } from '../../components/Navbar/Navbar'
 import app from '../../firebase';
 import axios from 'axios'
+import { useAppDispatch } from '../../redux/hooks'
+import {addNewProduct} from '../../redux/productSlice'
+
 
 interface FileType extends File {
   preview?: string
@@ -23,6 +26,7 @@ const previewCard = {
 const maxImagesUpload = 2 // Maximum images allowed to upload
 
 export const AddProductPage = () => {
+  const dispatch = useAppDispatch()
   const initialValuesState = {
     title: '',
     price: '',
@@ -32,7 +36,6 @@ export const AddProductPage = () => {
     categories: ''
   }
   const [values, setValues] = useState(initialValuesState);
-
   const [uploadFiles, setUploadFiles] = useState<FileType[]>([])
   const [notification, setNotification] = useState({
     status: true,
@@ -92,8 +95,8 @@ export const AddProductPage = () => {
       if (productInfo.img.length > maxImagesUpload) {
         throw new Error('You are only allowed to upload maximum 2 pictures')
       }
-
-      await userRequest.post('/products', productInfo)
+      const res = await userRequest.post('/products', productInfo)
+      dispatch(addNewProduct(res.data))
       setNotification({
         mess: 'Add product success',
         status: true

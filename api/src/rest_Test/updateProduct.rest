@@ -1,0 +1,7 @@
+PUT http://localhost:5000/api/products/6244aaf3cebdf0348c70a349
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMzkyMWQyZjRjYWM2NGQxOGQyZmQ1YSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0ODY1NTg4MywiZXhwIjoxNjQ4ODI4NjgzfQ.rsUCqW4iGqYXoEdN-nvKuB-67yV2C6uLlO4FV7c7nts
+
+{
+    "title": "T-shirt"
+}
