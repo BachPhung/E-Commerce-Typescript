@@ -63,12 +63,12 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
                 first_name,
                 last_name,
                 username,
-                isAdmin
+                isAdmin: isAdmin
             })
         }
     }
     catch (err) {
         res.status(400).json('eoor')
-        //next(err)
+        next(err)
     }
 }
