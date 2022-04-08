@@ -14,10 +14,7 @@ import requestLogger from './middlewares/logger';
 
 const app = express();
 app.use(express.json());
-app.use(cors({
-  origin: `https://bachphung-ecommerce.netlify.app/`,  //react's address
-  credentials: true
-}));
+app.use(cors());
 
 mongoose.connect(config.MONGODB_URI!, {
   useNewUrlParser: true,
