@@ -11,5 +11,6 @@ router.get('/', verifyToken_1.default.verifyTokenAndAdmin, user_1.findAll);
 router.get('/:id', verifyToken_1.default.verifyTokenAndAuthorization, user_1.findById);
 router.put('/:id', verifyToken_1.default.verifyTokenAndAuthorization, user_1.updateUser);
 router.delete('/:id', verifyToken_1.default.verifyTokenAndAuthorization, user_1.deleteUser);
+router.put('/banned/:id', verifyToken_1.default.verifyTokenAndAdmin, user_1.bannedUser);
 exports.default = router;
 //# sourceMappingURL=user.js.map

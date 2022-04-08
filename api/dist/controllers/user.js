@@ -56,7 +56,7 @@ exports.findAll = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         next(err);
     }
 });
-//POST /users/banned/:id
+//PUT /users/banned/:id
 exports.bannedUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const foundUser = yield users_1.default.bannedUser(req.params.id);
