@@ -14,10 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.bannedUser = exports.findAll = exports.findById = exports.deleteUser = exports.updateUser = void 0;
 const users_1 = __importDefault(require("../services/users"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const config_1 = __importDefault(require("../middlewares/config"));
 //PUT /users/:id
 exports.updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const updateInfo = req.body;
+        if (req.body.password) {
+            updateInfo.password = yield bcrypt_1.default.hash(req.body.password, Number(config_1.default.SALTROUNDS));
+        }
         const userId = req.params.id;
         const updatedUser = yield users_1.default.update(userId, updateInfo);
         res.status(200).json(updatedUser);

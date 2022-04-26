@@ -1,11 +1,16 @@
 import UserServ from "../services/users"
+import bcrypt from 'bcrypt'
 import { NextFunction, Request, Response } from 'express';
 import { UserDocument } from "../models/User";
+import config from "../middlewares/config";
 
 //PUT /users/:id
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const updateInfo = req.body;
+        if(req.body.password){
+            updateInfo.password = await bcrypt.hash(req.body.password, Number(config.SALTROUNDS))
+        }
         const userId = req.params.id
         const updatedUser = await UserServ.update(userId, updateInfo);
         res.status(200).json(updatedUser)
