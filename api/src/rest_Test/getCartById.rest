@@ -1,0 +1,3 @@
+GET http://localhost:5000/api/carts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlMWE1YjY4NWY0ODRiOGEzYyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MDk4MTU3MCwiZXhwIjoxNjUxMTU0MzcwfQ.b_pFFp-ro0-deY5YJY4FNwU2WRwd8qI4xKtahwsN6qs

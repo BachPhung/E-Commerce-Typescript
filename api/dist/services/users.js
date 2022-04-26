@@ -24,7 +24,7 @@ const findById = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     return foundUser;
 });
 const findByCredential = (obj) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = yield User_1.default.findOne(Object.assign({}, obj));
+    const foundUser = yield User_1.default.findOne(Object.assign({}, obj)).populate("cart", { products: 1 });
     if (!foundUser) {
         throw new Error(`User not found`);
     }

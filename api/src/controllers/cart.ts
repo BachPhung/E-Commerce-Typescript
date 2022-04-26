@@ -44,12 +44,31 @@ export const findById = async (req: Request, res: Response, next: NextFunction) 
     }
 }
 
+export const findByUserId = async(req: Request, res: Response, next: NextFunction) => {
+    try{
+        const foundCart = await CartServ.findByUserId(req.params.id);
+        res.status(200).json(foundCart)
+    }
+    catch(err){
+        next(err)
+    }
+}
+
 export const addCart = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const newCart = CartServ.create(new Cart(req.body));
-        res.status(200).json(newCart);
+        const newCart = await CartServ.create(new Cart(req.body));
+        return res.status(200).json(newCart);
     }   
     catch(err){
         next(err);
+    }
+}
+
+export const addToCart = async (req: Request, res: Response, next: NextFunction) => {
+    try{
+
+    }
+    catch(err){
+        next(err)
     }
 }

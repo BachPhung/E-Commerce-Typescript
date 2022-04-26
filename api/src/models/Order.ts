@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose'
+import { Schema, model, Document, Types } from 'mongoose'
 
 export type ProductOrderDocument = Document & {
     productId: string,
@@ -15,17 +15,24 @@ export type OrderDocument = Document & {
 
 const OrderSchema = new Schema<OrderDocument>({
     userId: {
-        type: String,
-        required: true
+        type: Types.ObjectId,
+        ref:"User"
     },
     products: [
         {
             productId: {
-                type: String
+                type: Types.ObjectId,
+                ref: "Product"
             },
             quantity: {
                 type: Number,
                 default:1
+            },
+            size:{
+                type: String,
+            },
+            color:{
+                type:String
             }
         }
     ],

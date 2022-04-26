@@ -2,8 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import bcrypt from 'bcrypt'
 import User from "../models/User";
 import UserServ from "../services/users"
+import CartServ from '../services/carts'
 import jwt from 'jsonwebtoken'
 import config from '../middlewares/config'
+import Cart from "../models/Cart";
 const saltRound = Number(config.SALTROUNDS)
 const tokenSecret = config.TOKENSECRET;
 export const userRegister = async (req: Request, res: Response, next: NextFunction) => {
@@ -22,9 +24,13 @@ export const userRegister = async (req: Request, res: Response, next: NextFuncti
                 password: await bcrypt.hash(password, saltRound)
             });
             console.log("savedUser", savedUser);
-
             await UserServ.create(savedUser);
-            return res.status(200).json(savedUser)
+            const savedCart = new Cart({
+                userId: savedUser.id
+            })
+            await CartServ.create(savedCart);
+            const updatedUser = await UserServ.update(savedUser.id,{cart: savedCart.id});
+            return res.status(200).json(updatedUser)
         }
     }
     catch (error) {
@@ -60,18 +66,19 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
                 id: user._id,
                 isAdmin: user.isAdmin
             }, tokenSecret, { expiresIn: '2d' });
-            const { first_name, last_name, username, isAdmin } = user;
+            const { first_name, last_name, username, isAdmin, cart } = user;
             return res.status(200).json({
                 accessToken,
                 first_name,
                 last_name,
                 username,
-                isAdmin
+                isAdmin,
+                cart
             })
         }
     }
     catch (err) {
-        res.status(400).json('eoor')
-        //next(err)
+        //res.status(400).json('eoor')
+        next(err)
     }
 }

@@ -1,0 +1,7 @@
+POST http://localhost:5000/api/carts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdkZjI3NDJmN2U2MTMxMGVkZmIzZiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NTA5NzQ2MzgsImV4cCI6MTY1MTE0NzQzOH0.l0aXwamg39TAORu3PefErxInlVuswKiSymrDMzfyHK4
+
+{
+    "userId": "6267df2742f7e61310edfb3f"
+}

@@ -16,8 +16,10 @@ exports.userLogin = exports.userRegister = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const User_1 = __importDefault(require("../models/User"));
 const users_1 = __importDefault(require("../services/users"));
+const carts_1 = __importDefault(require("../services/carts"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../middlewares/config"));
+const Cart_1 = __importDefault(require("../models/Cart"));
 const saltRound = Number(config_1.default.SALTROUNDS);
 const tokenSecret = config_1.default.TOKENSECRET;
 exports.userRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -37,7 +39,12 @@ exports.userRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             });
             console.log("savedUser", savedUser);
             yield users_1.default.create(savedUser);
-            return res.status(200).json(savedUser);
+            const savedCart = new Cart_1.default({
+                userId: savedUser.id
+            });
+            yield carts_1.default.create(savedCart);
+            const updatedUser = yield users_1.default.update(savedUser.id, { cart: savedCart.id });
+            return res.status(200).json(updatedUser);
         }
     }
     catch (error) {
@@ -73,19 +80,20 @@ exports.userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
                 id: user._id,
                 isAdmin: user.isAdmin
             }, tokenSecret, { expiresIn: '2d' });
-            const { first_name, last_name, username, isAdmin } = user;
+            const { first_name, last_name, username, isAdmin, cart } = user;
             return res.status(200).json({
                 accessToken,
                 first_name,
                 last_name,
                 username,
-                isAdmin
+                isAdmin,
+                cart
             });
         }
     }
     catch (err) {
-        res.status(400).json('eoor');
-        //next(err)
+        //res.status(400).json('eoor')
+        next(err);
     }
 });
 //# sourceMappingURL=auth.js.map

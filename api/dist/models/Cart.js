@@ -3,17 +3,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const CartSchema = new mongoose_1.Schema({
     userId: {
-        type: String,
-        required: true
+        type: mongoose_1.Types.ObjectId,
+        ref: "User"
     },
     products: [
         {
-            productId: {
-                type: String,
+            product: {
+                type: mongoose_1.Types.ObjectId,
+                ref: "Product"
             },
             quantity: {
                 type: Number,
                 default: 1
+            },
+            size: {
+                type: String,
+            },
+            color: {
+                type: String
             }
         }
     ]

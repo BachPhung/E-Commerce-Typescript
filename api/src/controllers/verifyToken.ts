@@ -32,11 +32,11 @@ const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
 
 const verifyTokenAndAuthorization = (req: CustomRequest, res: Response, next: NextFunction) => {
     verifyToken(req,res, ()=>{
-        if(req.user?.id === req.params.id) {
+        if(req.user?.id) {
             next();
         }
         else {
-            res.status(403).json("You are not allow to do that !");
+            res.status(403).json(req.params.id + ` ${req.user?.id}`);
         }
     });
 };
@@ -47,7 +47,6 @@ const verifyTokenAndAdmin = (req: CustomRequest, res: Response, next: NextFuncti
             next();
         }
         else {
-            //res.status(403).json(req.user);
             res.status(403).json(`verifyTokenAndAdmin: ${req.user?.isAdmin}`);
         }
     });

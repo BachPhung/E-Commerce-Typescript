@@ -14,7 +14,7 @@ const findById = async (userId: string): Promise<UserDocument> =>{
 }
 
 const findByCredential = async (obj: Object): Promise<UserDocument> => {
-    const foundUser = await User.findOne({...obj})
+    const foundUser = await User.findOne({...obj}).populate("cart",{products:1})
     if(!foundUser){
         throw new Error(`User not found`);
     }

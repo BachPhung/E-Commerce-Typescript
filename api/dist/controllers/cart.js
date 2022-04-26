@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addCart = exports.findById = exports.deleteCart = exports.updateCart = exports.findAll = void 0;
+exports.addToCart = exports.addCart = exports.findByUserId = exports.findById = exports.deleteCart = exports.updateCart = exports.findAll = void 0;
 const carts_1 = __importDefault(require("../services/carts"));
 const Cart_1 = __importDefault(require("../models/Cart"));
 exports.findAll = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -53,10 +53,26 @@ exports.findById = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         next(err);
     }
 });
+exports.findByUserId = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const foundCart = yield carts_1.default.findByUserId(req.params.id);
+        res.status(200).json(foundCart);
+    }
+    catch (err) {
+        next(err);
+    }
+});
 exports.addCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newCart = carts_1.default.create(new Cart_1.default(req.body));
-        res.status(200).json(newCart);
+        const newCart = yield carts_1.default.create(new Cart_1.default(req.body));
+        return res.status(200).json(newCart);
+    }
+    catch (err) {
+        next(err);
+    }
+});
+exports.addToCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
     }
     catch (err) {
         next(err);

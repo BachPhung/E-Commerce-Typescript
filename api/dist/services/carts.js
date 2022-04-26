@@ -26,9 +26,16 @@ const update = (cartId, updatedCart) => __awaiter(void 0, void 0, void 0, functi
     return foundCart;
 });
 const findById = (cartId) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundCart = yield Cart_1.default.findById(cartId);
+    const foundCart = yield Cart_1.default.findById(cartId).populate("products.product", { img: 1, size: 1, color: 1 });
     if (!foundCart) {
         throw new Error(`Product ${cartId} not found`);
+    }
+    return foundCart;
+});
+const findByUserId = (userIdCart) => __awaiter(void 0, void 0, void 0, function* () {
+    const foundCart = yield Cart_1.default.findOne({ userId: userIdCart }).populate("products.product", { img: 1, size: 1, color: 1 });
+    if (!foundCart) {
+        throw new Error(`Product ${userIdCart} not found`);
     }
     return foundCart;
 });
@@ -47,6 +54,7 @@ exports.default = {
     update,
     findById,
     findAll,
-    deleteCart
+    deleteCart,
+    findByUserId
 };
 //# sourceMappingURL=carts.js.map

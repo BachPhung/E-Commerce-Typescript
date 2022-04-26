@@ -1,4 +1,5 @@
-import { Schema, model, Document } from 'mongoose'
+import { Schema, model, Document, Types } from 'mongoose'
+import { CartDocument } from './Cart'
 const uniqueValidator = require('mongoose-unique-validator')
 type User = {
     first_name: string,
@@ -7,7 +8,8 @@ type User = {
     password:string,
     avatar?:string,
     isAdmin: boolean,
-    isBanned: boolean
+    isBanned: boolean,
+    cart: CartDocument | null
 }
 
 export interface UserDocument extends User, Document{}
@@ -45,6 +47,11 @@ const UserSChema = new Schema<UserDocument>({
     isBanned:{
         type:Boolean,
         default:false
+    },
+    cart:{
+        type: Types.ObjectId,
+        ref:"Cart",
+        default:null
     }
 }, {timestamps:true})
 

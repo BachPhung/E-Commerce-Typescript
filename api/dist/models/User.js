@@ -33,6 +33,11 @@ const UserSChema = new mongoose_1.Schema({
     isBanned: {
         type: Boolean,
         default: false
+    },
+    cart: {
+        type: mongoose_1.Types.ObjectId,
+        ref: "Cart",
+        default: null
     }
 }, { timestamps: true });
 UserSChema.plugin(uniqueValidator);

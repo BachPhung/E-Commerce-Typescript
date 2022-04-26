@@ -32,12 +32,12 @@ const verifyToken = (req, res, next) => {
 };
 const verifyTokenAndAuthorization = (req, res, next) => {
     verifyToken(req, res, () => {
-        var _a;
-        if (((_a = req.user) === null || _a === void 0 ? void 0 : _a.id) === req.params.id) {
+        var _a, _b;
+        if ((_a = req.user) === null || _a === void 0 ? void 0 : _a.id) {
             next();
         }
         else {
-            res.status(403).json("You are not allow to do that !");
+            res.status(403).json(req.params.id + ` ${(_b = req.user) === null || _b === void 0 ? void 0 : _b.id}`);
         }
     });
 };
@@ -48,7 +48,6 @@ const verifyTokenAndAdmin = (req, res, next) => {
             next();
         }
         else {
-            //res.status(403).json(req.user);
             res.status(403).json(`verifyTokenAndAdmin: ${(_b = req.user) === null || _b === void 0 ? void 0 : _b.isAdmin}`);
         }
     });

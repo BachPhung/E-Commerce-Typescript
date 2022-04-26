@@ -9,6 +9,7 @@ const cart_1 = require("../controllers/cart");
 const router = express_1.default.Router();
 router.get('/', verifyToken_1.default.verifyTokenAndAdmin, cart_1.findAll);
 router.get('/:id', verifyToken_1.default.verifyTokenAndAuthorization, cart_1.findById);
+router.get('/find/:id', verifyToken_1.default.verifyTokenAndAuthorization, cart_1.findByUserId);
 router.post('/', verifyToken_1.default.verifyToken, cart_1.addCart);
 router.put('/:id', verifyToken_1.default.verifyTokenAndAuthorization, cart_1.updateCart);
 router.delete('/:id', verifyToken_1.default.verifyTokenAndAuthorization, cart_1.deleteCart);
