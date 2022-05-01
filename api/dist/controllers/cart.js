@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cleanCart = exports.addCart = exports.findByUserId = exports.findById = exports.deleteCart = exports.decreaseQuantity = exports.updateCart = exports.findAll = void 0;
+exports.cleanCart = exports.addCart = exports.findByUserId = exports.findById = exports.deleteCart = exports.decreaseQuantity = exports.increaseQuantity = exports.updateCart = exports.findAll = void 0;
 const carts_1 = __importDefault(require("../services/carts"));
 const Cart_1 = __importDefault(require("../models/Cart"));
 exports.findAll = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -49,6 +49,35 @@ exports.updateCart = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
             products,
             quantity,
             total: Math.round(total * 100) / 100
+        };
+        const updatedCart = yield carts_1.default.update(cartId, newCart);
+        res.status(200).json(updatedCart);
+    }
+    catch (err) {
+        next(err);
+    }
+});
+//Increase quantity of product
+exports.increaseQuantity = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const cartId = req.params.id;
+        const fetchedCart = yield carts_1.default.findById(cartId);
+        const body = req.body;
+        const size = body.size;
+        const color = body.color;
+        const price = body.price;
+        const productId = body.productId;
+        let products = fetchedCart.products;
+        const updatedProductIndex = products.findIndex(p => {
+            console.log(p.product.id, productId);
+            return (p.product.id === productId && p.size === size && p.color === color);
+        });
+        console.log(updatedProductIndex);
+        products[updatedProductIndex].quantity++;
+        const newCart = {
+            products,
+            quantity: fetchedCart.quantity + 1,
+            total: Math.round((fetchedCart.total + price) * 100) / 100
         };
         const updatedCart = yield carts_1.default.update(cartId, newCart);
         res.status(200).json(updatedCart);

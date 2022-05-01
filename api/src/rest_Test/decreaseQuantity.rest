@@ -1,6 +1,6 @@
-PUT http://localhost:5000/api/carts/decrease/6267e50e1a5b685f484b8a40
+PUT http://localhost:5000/api/carts/increase/6267e50e1a5b685f484b8a40
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlMWE1YjY4NWY0ODRiOGEzYyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MDk5Njk5MCwiZXhwIjoxNjUxMTY5NzkwfQ.ynrlaHMRPFPBkaQXU9GpATJLPkygiQtTd9jDqrTK46o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlMWE1YjY4NWY0ODRiOGEzYyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MTM2ODI0NywiZXhwIjoxNjUxNTQxMDQ3fQ.GWy023JuhPxuGPognn3Wc2oDG_ZsPucTDj4OIAdIVWM
 
 {
     "productId": "623a7f4a289e69175812e21f",

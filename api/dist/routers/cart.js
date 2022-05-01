@@ -15,5 +15,6 @@ router.put('/:id', verifyToken_1.default.verifyTokenAndAuthorization, cart_1.upd
 router.delete('/:id', verifyToken_1.default.verifyTokenAndAuthorization, cart_1.deleteCart);
 router.put('/clean/:id', verifyToken_1.default.verifyTokenAndAuthorization, cart_1.cleanCart);
 router.put('/decrease/:id', verifyToken_1.default.verifyTokenAndAuthorization, cart_1.decreaseQuantity);
+router.put('/increase/:id', verifyToken_1.default.verifyTokenAndAuthorization, cart_1.increaseQuantity);
 exports.default = router;
 //# sourceMappingURL=cart.js.map

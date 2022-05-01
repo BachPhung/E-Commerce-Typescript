@@ -46,6 +46,36 @@ export const updateCart = async (req: Request, res: Response, next: NextFunction
   }
 }
 
+//Increase quantity of product
+export const increaseQuantity = async(req: Request, res: Response, next: NextFunction) => {
+  try {
+    const cartId = req.params.id;
+    const fetchedCart = await CartServ.findById(cartId);
+    const body = req.body;
+    const size = body.size;
+    const color = body.color;
+    const price = body.price
+    const productId = body.productId
+    let products = fetchedCart.products
+    const updatedProductIndex = products.findIndex(p => {
+      console.log(p.product.id, productId);
+      return (p.product.id === productId && p.size === size && p.color === color)
+    })
+    console.log(updatedProductIndex);
+    products[updatedProductIndex].quantity++
+    const newCart = {
+      products,
+      quantity: fetchedCart.quantity + 1,
+      total: Math.round((fetchedCart.total + price) * 100) / 100
+    }
+    const updatedCart = await CartServ.update(cartId, newCart);
+    res.status(200).json(updatedCart);
+  }
+  catch (err) {
+    next(err)
+  }
+}
+
 // Decrease quantity of product
 export const decreaseQuantity = async (req: Request, res: Response, next: NextFunction) => {
   try {

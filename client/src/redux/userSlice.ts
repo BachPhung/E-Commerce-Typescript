@@ -31,6 +31,7 @@ const userSlice = createSlice({
         logOut: (state) =>{
             localStorage.removeItem('user')
             state.currentUser = null
+            window.location.reload()
         }
     }
 })

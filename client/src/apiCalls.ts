@@ -2,8 +2,9 @@ import { publicRequest, userRequest } from "./requestMethod";
 import { loginFailure, loginStart, loginSuccess, logOut } from "./redux/userSlice";
 import { setCart } from "./redux/cartSlice";
 import { fetchProductFailure, fetchProductSuccess, fetchProductStart } from "./redux/productSlice";
-import { FetchProduct, FetchUser, SignUpForm } from "./types";
+import { CartProduct, FetchProduct, FetchUser, SignUpForm } from "./types";
 import {initialCartStateType} from './redux/cartSlice'
+import { async } from "@firebase/util";
 export type LoginCredential = {
     username: string,
     password: string
@@ -48,5 +49,15 @@ export const register = async (signupCredential: SignUpForm)=>{
 
 export const getAllUser = async (): Promise<FetchUser[]> => {
     const res = await userRequest.get('/users')
+    return res.data
+}
+
+export const increaseQuantityCall = async(cartId:string, productId:string, size:string, color:string, price:number): Promise<CartProduct>=>{
+    const  res = await userRequest.put(`/carts/increase/${cartId}`,{productId,size,color,price})
+    return res.data
+}
+
+export const decreaseQuantityCall = async(cartId:string,productId:string, size:string, color:string, price:number): Promise<CartProduct>=>{
+    const  res = await userRequest.put(`/carts/decrease/${cartId}`,{productId,size,color,price})
     return res.data
 }
