@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import { createSlice } from "@reduxjs/toolkit";
 import { decreaseQuantityCall, increaseQuantityCall } from "../apiCalls";
 import { CartProduct } from "../types";
@@ -43,22 +44,23 @@ const cartSlice = createSlice({
       state.products[index].quantity += 1
       state.total += action.payload.price
       state.total = Math.round(state.total * 100) / 100
-      
-      if(state.cartId.length === 0){
+
+      if (state.cartId.length === 0) {
         localStorage.setItem('cart', JSON.stringify(state))
       }
-      else{
-        let userStorage = JSON.parse(localStorage.getItem("user")||'{}');
-        userStorage.currentUser.cart.products[index].quantity++;
-        userStorage.currentUser.cart.quantity++
-        userStorage.currentUser.cart.total += action.payload.price
-        userStorage.currentUser.cart.total = Math.round(userStorage.currentUser.cart.total * 100) / 100
+      else {
+        increaseQuantityCall(state.cartId, productPayload.product, productPayload.size, productPayload.color, productPayload.price)
+        let userStorage = JSON.parse(localStorage.getItem("user") || '{}');
+        const cartStorage = userStorage.currentUser.cart
+        cartStorage.products[index].quantity++;
+        cartStorage.quantity++
+        cartStorage.total += action.payload.price
+        cartStorage.total = Math.round(userStorage.currentUser.cart.total * 100) / 100
         localStorage.setItem("user", JSON.stringify(userStorage));
-        increaseQuantityCall(state.cartId, productPayload.product, productPayload.size, productPayload.color, productPayload.price )
-      } 
+      }
     },
     decreaseQuantity: (state, action) => {
-      state.quantity += -1
+      state.quantity -= 1
       let productPayload: CartProduct = action.payload
       const index = state.products.findIndex(product => {
         return product.product === productPayload.product
@@ -70,19 +72,19 @@ const cartSlice = createSlice({
       state.total = Math.round(state.total * 100) / 100
       state.products = state.products.filter(product => product.quantity > 0)
       console.log(state.cartId);
-      if(state.cartId.length === 0){
+      if (state.cartId.length === 0) {
         localStorage.setItem('cart', JSON.stringify(state))
       }
-      else{
-        let userStorage = JSON.parse(localStorage.getItem("user")||'{}');
-        decreaseQuantityCall(state.cartId, productPayload.product, productPayload.size, productPayload.color, productPayload.price )
+      else {
+        let userStorage = JSON.parse(localStorage.getItem("user") || '{}');
+        decreaseQuantityCall(state.cartId, productPayload.product, productPayload.size, productPayload.color, productPayload.price)
         userStorage.currentUser.cart.products[index].quantity--;
         userStorage.currentUser.cart.quantity--
         userStorage.currentUser.cart.total -= action.payload.price
         userStorage.currentUser.cart.total = Math.round(userStorage.currentUser.cart.total * 100) / 100
         localStorage.setItem("user", JSON.stringify(userStorage));
         console.log(state.cartId);
-      } 
+      }
     },
     setCart: (state, action) => {
       state.products = action.payload.products || []

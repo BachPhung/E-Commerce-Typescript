@@ -1,10 +1,9 @@
 import { publicRequest, userRequest } from "./requestMethod";
 import { loginFailure, loginStart, loginSuccess, logOut } from "./redux/userSlice";
-import { setCart } from "./redux/cartSlice";
+import { setCart, initialCartStateType } from "./redux/cartSlice";
 import { fetchProductFailure, fetchProductSuccess, fetchProductStart } from "./redux/productSlice";
 import { CartProduct, FetchProduct, FetchUser, SignUpForm } from "./types";
-import {initialCartStateType} from './redux/cartSlice'
-import { async } from "@firebase/util";
+
 export type LoginCredential = {
     username: string,
     password: string
@@ -16,6 +15,7 @@ export const login = async (dispatch: any, userCredential: LoginCredential) => {
         const res = await publicRequest.post('/auth/login', userCredential)
         dispatch(loginSuccess(res.data))
         dispatch(setCart(res.data.cart))
+        window.location.reload();
     }
     catch(err){
         dispatch(loginFailure(err))
