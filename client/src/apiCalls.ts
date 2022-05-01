@@ -13,9 +13,7 @@ export const login = async (dispatch: any, userCredential: LoginCredential) => {
     dispatch(loginStart);
     try{
         const res = await publicRequest.post('/auth/login', userCredential)
-        dispatch(loginSuccess(res.data))
-        dispatch(setCart(res.data.cart))
-        window.location.reload();
+        Promise.all([ dispatch(loginSuccess({...res.data})), dispatch(setCart(res.data.cart))])
     }
     catch(err){
         dispatch(loginFailure(err))

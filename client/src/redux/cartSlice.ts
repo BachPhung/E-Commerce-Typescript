@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { createSlice } from "@reduxjs/toolkit";
 import { decreaseQuantityCall, increaseQuantityCall } from "../apiCalls";
 import { CartProduct } from "../types";

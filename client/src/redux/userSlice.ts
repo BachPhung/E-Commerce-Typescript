@@ -11,7 +11,7 @@ type currentUserType = {
 const userSlice = createSlice({
     name: 'user',
     initialState: {
-        currentUser: JSON.parse(localStorage.getItem('user')|| 'null')?.currentUser || null as currentUserType | null,
+        currentUser: JSON.parse(localStorage.getItem('user')|| 'null')?.currentUser || null as null | currentUserType,
         isFetching:false,
         error:null
     },
@@ -22,7 +22,9 @@ const userSlice = createSlice({
         loginSuccess: (state,action) => {
             state.isFetching = false
             state.currentUser = action.payload
+            console.log(state.currentUser);
             localStorage.setItem('user', JSON.stringify(state))
+            window.location.reload()
         },
         loginFailure: (state,action) => {
             state.isFetching = false
@@ -32,9 +34,12 @@ const userSlice = createSlice({
             localStorage.removeItem('user')
             state.currentUser = null
             window.location.reload()
+        },
+        setCurrentUser: (state, action) => {
+            state.currentUser = action.payload
         }
     }
 })
 
-export const {loginStart, loginSuccess, loginFailure, logOut} = userSlice.actions
+export const {loginStart, loginSuccess, loginFailure, logOut, setCurrentUser} = userSlice.actions
 export default userSlice.reducer

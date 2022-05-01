@@ -12,6 +12,6 @@ export const publicRequest = axios.create({
 
 export const userRequest = axios.create({
     baseURL: BASE_URL,
+    headers: {authorization: `Bearer ${getToken()}` }
 })
-userRequest.defaults.headers.common['authorization'] = `Bearer ${getToken()}`
 
