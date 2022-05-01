@@ -17,14 +17,14 @@ const create = (user) => __awaiter(void 0, void 0, void 0, function* () {
     return user.save();
 });
 const findById = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = yield User_1.default.findById(userId);
+    const foundUser = yield User_1.default.findById(userId).populate("cart products.product");
     if (!foundUser) {
         throw new Error(`User ${userId} not found`);
     }
     return foundUser;
 });
 const findByCredential = (obj) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundUser = yield User_1.default.findOne(Object.assign({}, obj)).populate("cart", { products: 1 });
+    const foundUser = yield User_1.default.findOne(Object.assign({}, obj)).populate("cart products.product");
     if (!foundUser) {
         throw new Error(`User not found`);
     }

@@ -1,5 +1,4 @@
 import { AppBar, TableRow, TableHead, TableContainer, TableCell, TableBody, Table, Button } from '@mui/material'
-import { makeStyles } from '@material-ui/core/styles'
 import { useEffect, useState } from 'react'
 
 import { Navbar } from '../../components/Navbar/Navbar'

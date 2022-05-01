@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { RootState } from '../../redux/store'
 import { Add, Remove } from '@material-ui/icons';
 import { CartProduct } from '../../types'
+import { useAppSelector } from '../../redux/hooks'
 
 const ProductDetail = styled.div`
   flex: 2;
@@ -23,9 +24,7 @@ const Details = styled.div`
 const ProductName = styled.span`
     
 `
-const ProductId = styled.span`
-    
-`
+
 const ProductColor = styled.div`
     width: 20px;
     height: 20px;
@@ -75,12 +74,16 @@ const SummaryItemPrice = styled.span`
 
 export const CartPage = () => {
   const cart = useSelector((state: RootState) => state.cart)
+  const productStore = useAppSelector(state=>state.product)
+  const productIds = cart.products.map(p=> p.product)
+  const products = productStore.products.filter(p=>{
+    return productIds.includes(p._id)});
   const dispatch = useDispatch()
-  const handleAddQuantity = (product: CartProduct) => {
-    dispatch(addQuantity(product))
+  const handleAddQuantity = (product:string, size:string, color:string, price: number) => {
+    dispatch(addQuantity({product, size, color, price}))
   }
-  const handleDescreaseQuantity = (product: CartProduct) => {
-    dispatch(decreaseQuantity(product))
+  const handleDescreaseQuantity = (product:string, size:string, color:string, price: number) => {
+    dispatch(decreaseQuantity({product, size, color, price}))
   }
   return (
     <div>
@@ -89,32 +92,34 @@ export const CartPage = () => {
       </AppBar>
       <Box display='flex' justifyContent='space-between' padding='20px' marginTop={'80px'}>
         <Box flex={3}>
-          {cart.products.map(product => {
-            return (
-              <Box key={product._id + Math.random()} display='flex' justifyContent='space-between' borderBottom={'1px solid black'} marginBottom={'50px'}>
-                <Box flex={2}>
-                  <ProductDetail>
-                    <Image src={product.img[0]} />
-                    <Details>
-                      <ProductName><b>Product: </b>{product.title}</ProductName>
-                      <ProductId><b>ID: </b>{product._id}</ProductId>
-                      <ProductColor color={`${product.color}`} />
-                      <ProductSize><b>Size: </b>{product.size}</ProductSize>
-                    </Details>
-                  </ProductDetail>
+          {productIds.map((id,index) => {
+            return products.filter(p=>p._id === id).map(product=>{
+              return (
+                <Box key={product._id + Math.random()} display='flex' justifyContent='space-between' borderBottom={'1px solid black'} marginBottom={'50px'}>
+                  <Box flex={2}>
+                    <ProductDetail>
+                      <Image src={product.img[0]} />
+                      <Details>
+                        <ProductName><b>Product: </b>{product.title}</ProductName>
+                        <ProductColor color={`${cart.products[index].color}`} />
+                        <ProductSize><b>Size: </b>{cart.products[index].size}</ProductSize>
+                      </Details>
+                    </ProductDetail>
+                  </Box>
+                  <Box flex={2}>
+                    <PriceDetails>
+                      <ProductAmountContainer>
+                        <Add style={{ cursor: "pointer" }} onClick={() => handleAddQuantity(id, cart.products[index].size, cart.products[index].color, cart.products[index].price)}></Add>
+                        <ProductAmount>{cart.products[index].quantity}</ProductAmount>
+                        <Remove style={{ cursor: "pointer" }} onClick={() => handleDescreaseQuantity(id, cart.products[index].size, cart.products[index].color, cart.products[index].price)} />
+                      </ProductAmountContainer>
+                      <ProductPrice>€ {(cart.products[index].price * cart.products[index].quantity ).toFixed(2)}</ProductPrice>
+                    </PriceDetails>
+                  </Box>
                 </Box>
-                <Box flex={2}>
-                  <PriceDetails>
-                    <ProductAmountContainer>
-                      <Add style={{ cursor: "pointer" }} onClick={() => handleAddQuantity(product)}></Add>
-                      <ProductAmount>{product.quantity}</ProductAmount>
-                      <Remove style={{ cursor: "pointer" }} onClick={() => handleDescreaseQuantity(product)} />
-                    </ProductAmountContainer>
-                    <ProductPrice>€ {(product.price * product.quantity).toFixed(2)}</ProductPrice>
-                  </PriceDetails>
-                </Box>
-              </Box>
-            )
+              )
+            })
+            
           })}
         </Box>
         <Box flex={1} border='0.5px solid lightgray' borderRadius='10px' padding={'20px'} height={'80vh'}>

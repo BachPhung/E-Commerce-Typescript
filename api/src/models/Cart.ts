@@ -5,6 +5,8 @@ import { ProductOrderDocument } from './Order'
 export type CartDocument = Document & {
     userId: string,
     products: Array<ProductOrderDocument>,
+    quantity: number,
+    total:number
 }
 
 const CartSchema = new Schema<CartDocument>({
@@ -27,9 +29,20 @@ const CartSchema = new Schema<CartDocument>({
             },
             color:{
                 type:String
+            },
+            price:{
+                type: Number
             }
         }
-    ]
+    ],
+    quantity: {
+        type: Number,
+        default:0
+    },
+    total:{
+        type: Number,
+        default:0
+    }
 })
 
 export default model<CartDocument>('Cart', CartSchema);

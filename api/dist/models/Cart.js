@@ -21,9 +21,20 @@ const CartSchema = new mongoose_1.Schema({
             },
             color: {
                 type: String
+            },
+            price: {
+                type: Number
             }
         }
-    ]
+    ],
+    quantity: {
+        type: Number,
+        default: 0
+    },
+    total: {
+        type: Number,
+        default: 0
+    }
 });
 exports.default = mongoose_1.model('Cart', CartSchema);
 //# sourceMappingURL=Cart.js.map

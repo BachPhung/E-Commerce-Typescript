@@ -19,21 +19,21 @@ const create = (cart) => __awaiter(void 0, void 0, void 0, function* () {
 });
 // CHANGE
 const update = (cartId, updatedCart) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundCart = yield Cart_1.default.findByIdAndUpdate(cartId, updatedCart, { new: true });
+    const foundCart = yield Cart_1.default.findByIdAndUpdate(cartId, updatedCart, { new: true }).populate("products.product", { price: 1 });
     if (!foundCart) {
         throw new Error(`Product ${cartId} not found`);
     }
     return foundCart;
 });
 const findById = (cartId) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundCart = yield Cart_1.default.findById(cartId).populate("products.product", { img: 1, size: 1, color: 1 });
+    const foundCart = yield Cart_1.default.findById(cartId).populate("products.product");
     if (!foundCart) {
         throw new Error(`Product ${cartId} not found`);
     }
     return foundCart;
 });
 const findByUserId = (userIdCart) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundCart = yield Cart_1.default.findOne({ userId: userIdCart }).populate("products.product", { img: 1, size: 1, color: 1 });
+    const foundCart = yield Cart_1.default.findOne({ userId: userIdCart }).populate("products.product");
     if (!foundCart) {
         throw new Error(`Product ${userIdCart} not found`);
     }
@@ -49,12 +49,20 @@ const deleteCart = (cartId) => __awaiter(void 0, void 0, void 0, function* () {
 const findAll = () => __awaiter(void 0, void 0, void 0, function* () {
     return Cart_1.default.find();
 });
+const cleanCart = (cartId) => __awaiter(void 0, void 0, void 0, function* () {
+    const foundCart = yield Cart_1.default.findByIdAndUpdate(cartId, { quantity: 0, total: 0, products: [] }, { new: true });
+    if (!foundCart) {
+        throw new Error(`product ${cartId} not found`);
+    }
+    return foundCart;
+});
 exports.default = {
     create,
     update,
     findById,
     findAll,
     deleteCart,
-    findByUserId
+    findByUserId,
+    cleanCart
 };
 //# sourceMappingURL=carts.js.map

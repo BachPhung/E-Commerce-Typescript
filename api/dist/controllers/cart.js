@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addToCart = exports.addCart = exports.findByUserId = exports.findById = exports.deleteCart = exports.updateCart = exports.findAll = void 0;
+exports.cleanCart = exports.addCart = exports.findByUserId = exports.findById = exports.deleteCart = exports.decreaseQuantity = exports.updateCart = exports.findAll = void 0;
 const carts_1 = __importDefault(require("../services/carts"));
 const Cart_1 = __importDefault(require("../models/Cart"));
 exports.findAll = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -24,11 +24,70 @@ exports.findAll = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         next(err);
     }
 });
+// Add product to cart
 exports.updateCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newCartInfo = req.body;
+        let quantity = 0;
+        let total = 0;
+        let products;
         const cartId = req.params.id;
-        const updatedCart = yield carts_1.default.update(cartId, newCartInfo);
+        const fetchedCart = yield carts_1.default.findById(cartId);
+        if (req.body.products) {
+            products = fetchedCart.products.concat(req.body.products);
+            products.forEach(p => {
+                if (p.quantity) {
+                    quantity += p.quantity;
+                    total += p.price * p.quantity;
+                }
+                else {
+                    quantity += 1;
+                    total += p.price;
+                }
+            });
+        }
+        const newCart = {
+            products,
+            quantity,
+            total: Math.round(total * 100) / 100
+        };
+        const updatedCart = yield carts_1.default.update(cartId, newCart);
+        res.status(200).json(updatedCart);
+    }
+    catch (err) {
+        next(err);
+    }
+});
+// Decrease quantity of product
+exports.decreaseQuantity = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const cartId = req.params.id;
+        const fetchedCart = yield carts_1.default.findById(cartId);
+        const body = req.body;
+        const size = body.size;
+        const color = body.color;
+        const price = body.price;
+        const productId = body.productId;
+        let products = fetchedCart.products;
+        const updatedProductIndex = products.findIndex(p => {
+            console.log(p.product.id, productId);
+            return (p.product.id === productId && p.size === size && p.color === color);
+        });
+        console.log(updatedProductIndex);
+        const updatedProduct = products[updatedProductIndex];
+        if (updatedProduct.quantity === 1) {
+            products = products.filter(p => {
+                return !(p.size === size && p.color === color);
+            });
+        }
+        else {
+            products[updatedProductIndex].quantity--;
+        }
+        const newCart = {
+            products,
+            quantity: fetchedCart.quantity - 1,
+            total: Math.round((fetchedCart.total - price) * 100) / 100
+        };
+        const updatedCart = yield carts_1.default.update(cartId, newCart);
         res.status(200).json(updatedCart);
     }
     catch (err) {
@@ -71,8 +130,10 @@ exports.addCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         next(err);
     }
 });
-exports.addToCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.cleanCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const updatedCart = yield carts_1.default.cleanCart(req.params.id);
+        return res.status(200).json(updatedCart);
     }
     catch (err) {
         next(err);

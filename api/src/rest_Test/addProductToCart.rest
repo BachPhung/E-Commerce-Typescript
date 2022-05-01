@@ -1,6 +1,6 @@
 PUT http://localhost:5000/api/carts/6267e50e1a5b685f484b8a40
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlMWE1YjY4NWY0ODRiOGEzYyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MDk4Mzg1NCwiZXhwIjoxNjUxMTU2NjU0fQ.b6_synTWYxX6QxgtZzMOaCAkMoqOSmWzLT_BqsMTmJc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlMWE1YjY4NWY0ODRiOGEzYyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MTA5Njc4NCwiZXhwIjoxNjUxMjY5NTg0fQ.oNMAG1bBsWhAHIvdLKoFfHQxuTKa2blaE-OO00Az_o4
 
 {
     "products":[
@@ -8,18 +8,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlM
             "product": "623a7f4a289e69175812e21f",
             "size": "S",
             "color": "Red",
-            "quantity": 3
+            "quantity": 3,
+            "price": 31.99
         },
         {
             "product": "623a8d68289e69175812e225",
             "size": "S",
             "color": "Blue",
-            "quantity":3
+            "quantity":3,
+            "price": 83.99
         },
         {
             "product": "623a7f4a289e69175812e21f",
             "size": "S",
-            "color": "Yellow"
+            "color": "Yellow",
+            "price": 31.99
         }
     ]
 }

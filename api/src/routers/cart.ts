@@ -1,6 +1,6 @@
 import express from 'express'
 import verifyServ from '../controllers/verifyToken'
-import {findAll, updateCart, deleteCart, findById, addCart, findByUserId } from '../controllers/cart'
+import {findAll, updateCart, deleteCart, findById, addCart, findByUserId, cleanCart, decreaseQuantity } from '../controllers/cart'
 
 const router = express.Router()
 
@@ -10,5 +10,6 @@ router.get('/find/:id', verifyServ.verifyTokenAndAuthorization, findByUserId);
 router.post('/', verifyServ.verifyToken, addCart);
 router.put('/:id', verifyServ.verifyTokenAndAuthorization, updateCart);
 router.delete('/:id', verifyServ.verifyTokenAndAuthorization, deleteCart);
-
+router.put('/clean/:id', verifyServ.verifyTokenAndAuthorization, cleanCart);
+router.put('/decrease/:id', verifyServ.verifyTokenAndAuthorization, decreaseQuantity);
 export default router;

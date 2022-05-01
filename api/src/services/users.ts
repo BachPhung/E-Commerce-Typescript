@@ -5,7 +5,7 @@ const create = async (user: UserDocument): Promise<UserDocument> =>{
 }
 
 const findById = async (userId: string): Promise<UserDocument> =>{
-    const foundUser = await User.findById(userId);
+    const foundUser = await User.findById(userId).populate("cart products.product");
 
     if(!foundUser){
         throw new Error(`User ${userId} not found`);
@@ -14,7 +14,7 @@ const findById = async (userId: string): Promise<UserDocument> =>{
 }
 
 const findByCredential = async (obj: Object): Promise<UserDocument> => {
-    const foundUser = await User.findOne({...obj}).populate("cart",{products:1})
+    const foundUser = await User.findOne({...obj}).populate("cart products.product")
     if(!foundUser){
         throw new Error(`User not found`);
     }

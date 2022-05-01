@@ -28,8 +28,12 @@ export type FetchUser = {
   isBanned: boolean
 }
 
-export interface CartProduct extends FetchProduct {
-  quantity: number
+export interface CartProduct {
+  quantity: number,
+  product: string,
+  color: string,
+  size: string,
+  price: number
 }
 
 export type ProductParams = {

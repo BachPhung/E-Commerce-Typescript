@@ -1,3 +1,10 @@
-GET http://localhost:5000/api/carts/6267e50e1a5b685f484b8a40
+PUT http://localhost:5000/api/carts/decrease/6267e50e1a5b685f484b8a40
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlMWE1YjY4NWY0ODRiOGEzYyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MDk5Njk5MCwiZXhwIjoxNjUxMTY5NzkwfQ.ynrlaHMRPFPBkaQXU9GpATJLPkygiQtTd9jDqrTK46o
+
+{
+    "productId": "623a7f4a289e69175812e21f",
+    "size": "S",
+    "color": "Yellow",
+    "price": 31.99
+}

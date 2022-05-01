@@ -1,7 +1,7 @@
 import { AppBar, Box, Card, CardMedia, Button as ButtonMUI } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Navbar } from '../../components/Navbar/Navbar'
-import { FetchProduct, ProductParams } from '../../types'
+import { ProductParams } from '../../types'
 import { userRequest } from '../../requestMethod'
 import { Add, Remove } from '@material-ui/icons';
 import { addProduct } from '../../redux/cartSlice'
@@ -21,7 +21,7 @@ export const ProductPage = () => {
   const id: string | undefined = useParams<ProductParams>().id
   const dispatch = useAppDispatch()
   let user = useAppSelector(state => state.user.currentUser)
-  const [product, setProduct] = useState<FetchProduct | null>(null)
+  const [product, setProduct] = useState<string | null>(null)
   const [quantity, setQuantity] = useState(1)
   const [color, setColor] = useState('')
   const [size, setSize] = useState('')
@@ -29,14 +29,14 @@ export const ProductPage = () => {
     const getProduct = async () => {
       if (products.length > 0) {
         const product = products.filter(p => p._id === id)[0]
-        setProduct(product)
+        setProduct(product._id)
         setColor(product.color[0])
         setSize(product.size[0])
       }
       else {
         try {
           const fetchedProduct = await fetchProduct(id)
-          setProduct(fetchedProduct)
+          setProduct(fetchedProduct._id)
           setColor(fetchedProduct.color[0])
           setSize(fetchedProduct.size[0])
         }
@@ -50,13 +50,13 @@ export const ProductPage = () => {
 
   // ADD PRODDUCT TO CART
   const handleAddProduct = () => {
-    dispatch(addProduct({ ...product, quantity, color, size }));
+    dispatch(addProduct({ product, quantity, color, size, price: products.filter(p=>p._id === product)[0].price }));
   }
 
   // REMOVE PRODUCT FROM DATABASE
   const handleDeleteProduct = async () => {
     try {
-      await userRequest.delete(`/products/${product?._id}`)
+      await userRequest.delete(`/products/${product}`)
       navigate('/products')
     }
     catch (err) {
@@ -65,7 +65,6 @@ export const ProductPage = () => {
   }
 
   return (
-    product &&
     <div style={{ width: '100vw !important' }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Navbar />
@@ -73,7 +72,7 @@ export const ProductPage = () => {
       <Box width={'100%'} display='flex' marginTop={'80px'}>
         <Box flex={2} style={{ display: 'flex' }}>
           {
-            product.img.map(img => {
+            products.filter(p => p._id === id)[0].img.map(img => {
               return (
                 < Card key={img} >
                   <CardMedia
@@ -88,12 +87,12 @@ export const ProductPage = () => {
           }
         </Box>
         <Box flex={1} padding={'200px 0 0 60px'}>
-          <Title>{product.title}</Title>
-          <Price>€ {product.price}</Price>
+          <Title>{products.filter(p => p._id === id)[0].title}</Title>
+          <Price>€ {products.filter(p => p._id === id)[0].price}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              {product.color.map(c =>
+              {products.filter(p => p._id === id)[0].color.map(c =>
                 <span key={c + Math.random()} onClick={() => setColor(c)}>
                   <FilterColor className={color === c ? 'selectedColor' : ''} key={c} color={`${c}`} />
                 </span>
@@ -102,7 +101,7 @@ export const ProductPage = () => {
             <Filter>
               <FilterTitle>Size</FilterTitle>
               <FilterSize onChange={(e) => setSize(e.target.value)}>
-                {product.size.map(s => <FilterSizeOption key={s}>{s}</FilterSizeOption>)}
+                {products.filter(p => p._id === id)[0].size.map(s => <FilterSizeOption key={s}>{s}</FilterSizeOption>)}
               </FilterSize>
             </Filter>
           </FilterContainer>
@@ -114,7 +113,7 @@ export const ProductPage = () => {
             </AmountContainer>
             <Button onClick={handleAddProduct}>ADD TO CART</Button>
           </AddContainer>
-          <Desc>{product.desc.split(',').map(i => {
+          <Desc>{products.filter(p => p._id === id)[0].desc.split(',').map(i => {
             return (
               <li key={i} style={{ padding: '5px' }}>{i}</li>
             )

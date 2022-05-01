@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FetchProduct } from "../types";
 
+const productStorage = JSON.parse(localStorage.getItem("products")||'[]');
+
 const productSlice = createSlice({
   name: 'cart',
   initialState: {
-    products: [] as FetchProduct[],
+    products: productStorage as FetchProduct[],
     isFetching: false,
     error: null
   }
@@ -16,6 +18,7 @@ const productSlice = createSlice({
     fetchProductSuccess: (state, action) => {
       state.products = action.payload
       state.isFetching = false
+      localStorage.setItem("products",JSON.stringify(state.products));
     },
     fetchProductFailure: (state, action) => {
       state.error = action.payload

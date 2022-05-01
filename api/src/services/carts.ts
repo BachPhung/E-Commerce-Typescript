@@ -8,7 +8,7 @@ const create = async (cart: CartDocument): Promise<CartDocument> => {
 // CHANGE
 
 const update = async (cartId: string, updatedCart: Partial<CartDocument>): Promise<CartDocument | null> => {
-  const foundCart: CartDocument | null = await Cart.findByIdAndUpdate(cartId, updatedCart, { new: true });
+  const foundCart: CartDocument | null = await Cart.findByIdAndUpdate(cartId, updatedCart, { new: true }).populate("products.product",{price:1});
   if (!foundCart) {
     throw new Error(`Product ${cartId} not found`);
   }
@@ -16,7 +16,7 @@ const update = async (cartId: string, updatedCart: Partial<CartDocument>): Promi
 }
 
 const findById = async (cartId: string): Promise<CartDocument> => {
-  const foundCart: CartDocument | null = await Cart.findById(cartId).populate("products.product", { img: 1, size: 1, color: 1 });
+  const foundCart: CartDocument | null = await Cart.findById(cartId).populate("products.product");
   if (!foundCart) {
     throw new Error(`Product ${cartId} not found`);
   }
@@ -24,7 +24,7 @@ const findById = async (cartId: string): Promise<CartDocument> => {
 }
 
 const findByUserId = async (userIdCart: string): Promise<CartDocument> => {
-  const foundCart: CartDocument | null = await Cart.findOne({ userId: userIdCart }).populate("products.product", { img: 1, size: 1, color: 1 });
+  const foundCart: CartDocument | null = await Cart.findOne({ userId: userIdCart }).populate("products.product");
   if (!foundCart) {
     throw new Error(`Product ${userIdCart} not found`);
   }
@@ -43,12 +43,21 @@ const findAll = async (): Promise<CartDocument[]> => {
   return Cart.find()
 }
 
+const cleanCart = async (cartId: string): Promise<CartDocument | null> =>{
+  const foundCart: CartDocument | null = await Cart.findByIdAndUpdate(cartId,{quantity:0,total:0,products:[]},{ new: true })
+  if(!foundCart){
+    throw new Error(`product ${cartId} not found`);
+  }
+  return foundCart;
+}
+
 export default {
   create,
   update,
   findById,
   findAll,
   deleteCart,
-  findByUserId
+  findByUserId,
+  cleanCart
 }
 

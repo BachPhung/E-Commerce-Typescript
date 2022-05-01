@@ -28,9 +28,9 @@ const userSlice = createSlice({
             state.isFetching = false
             state.error = action.payload
         },
-        logOut: () =>{
+        logOut: (state) =>{
             localStorage.removeItem('user')
-            window.location.reload()
+            state.currentUser = null
         }
     }
 })

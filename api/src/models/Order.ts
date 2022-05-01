@@ -1,8 +1,13 @@
 import { Schema, model, Document, Types } from 'mongoose'
+import { ProductDocument } from './Product'
 
 export type ProductOrderDocument = Document & {
     productId: string,
-    quantity: number
+    quantity: number,
+    product: ProductDocument,
+    price: number,
+    size: string,
+    color: string
 }
 
 export type OrderDocument = Document & {

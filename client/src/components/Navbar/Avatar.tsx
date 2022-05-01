@@ -3,15 +3,15 @@ import { ClickAwayListener, Button, Grow, Paper, Popper, MenuList, MenuItem as M
 import Stack from '@mui/material/Stack';
 import { MenuItem } from './Navbar';
 import { useAppDispatch } from '../../redux/hooks';
-import { logOut } from '../../redux/userSlice';
+import { logout } from '../../apiCalls';
 
 export const Avatar = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
   const [option, setOption] = useState(0)
   const dispatch = useAppDispatch()
-  useEffect(()=>{
-    switch(option){
+  useEffect(() => {
+    switch (option) {
       case 1: {
         break;
       }
@@ -19,15 +19,15 @@ export const Avatar = () => {
         break;
       }
       case 3: {
-        dispatch(logOut())
+        logout(dispatch)
         break;
       }
     }
-  },[option, dispatch])
+  }, [option, dispatch])
   const handleToggle = () => {
     setOpen((preVOpen) => !preVOpen);
   };
-  
+
   const handleClose = (event: React.MouseEvent<Document | HTMLLIElement>) => {
     if (anchorRef.current && anchorRef?.current?.contains(event.target as Node)) {
       return;
@@ -90,10 +90,10 @@ export const Avatar = () => {
                     >
                       <MenuItemMUI onClick={handleClose}>Profile</MenuItemMUI>
                       <MenuItemMUI onClick={handleClose}>My account</MenuItemMUI>
-                      <MenuItemMUI onClick={(e)=>{
+                      <MenuItemMUI onClick={(e) => {
                         handleClose(e);
                         setOption(3)
-                        }}>Logout</MenuItemMUI>
+                      }}>Logout</MenuItemMUI>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>

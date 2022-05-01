@@ -1,8 +1,9 @@
 import { publicRequest, userRequest } from "./requestMethod";
-import { loginFailure, loginStart, loginSuccess } from "./redux/userSlice";
+import { loginFailure, loginStart, loginSuccess, logOut } from "./redux/userSlice";
+import { setCart } from "./redux/cartSlice";
 import { fetchProductFailure, fetchProductSuccess, fetchProductStart } from "./redux/productSlice";
 import { FetchProduct, FetchUser, SignUpForm } from "./types";
-
+import {initialCartStateType} from './redux/cartSlice'
 export type LoginCredential = {
     username: string,
     password: string
@@ -13,10 +14,16 @@ export const login = async (dispatch: any, userCredential: LoginCredential) => {
     try{
         const res = await publicRequest.post('/auth/login', userCredential)
         dispatch(loginSuccess(res.data))
+        dispatch(setCart(res.data.cart))
     }
     catch(err){
         dispatch(loginFailure(err))
     }
+}
+
+export const logout = async(dispatch: any) => {
+    dispatch(logOut());
+    dispatch(setCart(JSON.parse(localStorage.getItem('cart') || '{}') as initialCartStateType))
 }
 
 export const fetchProducts = async (dispatch: any) => {
