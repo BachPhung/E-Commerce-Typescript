@@ -13,6 +13,7 @@ export const login = async (dispatch: any, userCredential: LoginCredential) => {
     dispatch(loginStart);
     try{
         const res = await publicRequest.post('/auth/login', userCredential)
+        console.log(res.data.cart);
         Promise.all([ dispatch(loginSuccess({...res.data})), dispatch(setCart(res.data.cart))])
     }
     catch(err){
@@ -57,5 +58,10 @@ export const increaseQuantityCall = async(cartId:string, productId:string, size:
 
 export const decreaseQuantityCall = async(cartId:string,productId:string, size:string, color:string, price:number): Promise<CartProduct>=>{
     const  res = await userRequest.put(`/carts/decrease/${cartId}`,{productId,size,color,price})
+    return res.data
+}
+
+export const addProductCall = async(cartId:string, productId:string | null, size:string, color:string, price:number)=>{
+    const res = await userRequest.put(`/carts/${cartId}`,{products: [{product: productId, quantity: 1, size, color, price}]});
     return res.data
 }

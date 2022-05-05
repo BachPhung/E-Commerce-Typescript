@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { decreaseQuantityCall, increaseQuantityCall } from "../apiCalls";
+import { addProductCall, decreaseQuantityCall, increaseQuantityCall } from "../apiCalls";
 import { CartProduct } from "../types";
 
 export type initialCartStateType = {
@@ -16,6 +16,7 @@ const cart = login
   : JSON.parse(localStorage.getItem('cart') || '{}') as initialCartStateType
 console.log(cart);
 
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
@@ -26,11 +27,22 @@ const cartSlice = createSlice({
   } as initialCartStateType,
   reducers: {
     addProduct: (state, action) => {
-      state.quantity += action.payload.quantity
-      state.products.push(action.payload)
-      state.total += action.payload.price * action.payload.quantity
-      state.total = Math.round(state.total * 100) / 100
-      !login && localStorage.setItem('cart', JSON.stringify(state));
+      let productPayload: CartProduct = action.payload;
+      if (state.cartId.length === 0) {
+        localStorage.setItem('cart', JSON.stringify(state));
+        state.quantity += productPayload.quantity;
+        state.products.push(productPayload);
+        state.total += productPayload.price * productPayload.quantity;
+        state.total = Math.round(state.total * 100) / 100;
+      }
+      else {
+        let userStorage = JSON.parse(localStorage.getItem("user") || '{}');
+        const cartStorage = userStorage.currentUser.cart
+        cartStorage.products = state.products
+        cartStorage.quantity = state.quantity
+        cartStorage.total = state.total
+        localStorage.setItem("user", JSON.stringify(userStorage));
+      }
     },
     addQuantity: (state, action) => {
       let productPayload: CartProduct = action.payload
@@ -78,9 +90,10 @@ const cartSlice = createSlice({
         let userStorage = JSON.parse(localStorage.getItem("user") || '{}');
         decreaseQuantityCall(state.cartId, productPayload.product, productPayload.size, productPayload.color, productPayload.price)
         userStorage.currentUser.cart.products[index].quantity--;
-        userStorage.currentUser.cart.quantity--
-        userStorage.currentUser.cart.total -= action.payload.price
-        userStorage.currentUser.cart.total = Math.round(userStorage.currentUser.cart.total * 100) / 100
+        console.log(state.products);
+        userStorage.currentUser.cart.products = state.products
+        userStorage.currentUser.cart.quantity = state.quantity
+        userStorage.currentUser.cart.total = state.total
         localStorage.setItem("user", JSON.stringify(userStorage));
         console.log(state.cartId);
       }

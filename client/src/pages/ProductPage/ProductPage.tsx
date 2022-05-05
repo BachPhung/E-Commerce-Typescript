@@ -4,7 +4,7 @@ import { Navbar } from '../../components/Navbar/Navbar'
 import { ProductParams } from '../../types'
 import { userRequest } from '../../requestMethod'
 import { Add, Remove } from '@material-ui/icons';
-import { addProduct } from '../../redux/cartSlice'
+import { addProduct, setCart } from '../../redux/cartSlice'
 import './ProductPage.scss'
 import { useParams, useNavigate } from 'react-router-dom'
 import { MyModal } from '../../components/Modal/MyModal'
@@ -12,7 +12,7 @@ import {
   Title, Desc, Price, FilterContainer, Filter, FilterTitle,
   FilterColor, FilterSize, FilterSizeOption, AddContainer, AmountContainer, Amount, Button
 } from './ProductPageComponent'
-import { fetchProduct } from '../../apiCalls'
+import { addProductCall, fetchProduct } from '../../apiCalls'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 export const ProductPage = () => {
@@ -20,6 +20,7 @@ export const ProductPage = () => {
   let products = useAppSelector(state => state.product.products)
   const id: string | undefined = useParams<ProductParams>().id
   const dispatch = useAppDispatch()
+  let state = useAppSelector(state => state)
   let user = useAppSelector(state => state.user.currentUser)
   const [product, setProduct] = useState<string | null>(null)
   const [quantity, setQuantity] = useState(1)
@@ -49,8 +50,21 @@ export const ProductPage = () => {
   }, [id, products])
 
   // ADD PRODDUCT TO CART
-  const handleAddProduct = () => {
-    dispatch(addProduct({ product, quantity, color, size, price: products.filter(p=>p._id === product)[0].price }));
+  const handleAddProduct = async () => {
+    if(!user){
+      dispatch(addProduct({ product, quantity, color, size, price: products.filter(p=>p._id === product)[0].price }));
+    }
+    else{
+      let price = products.filter(p=>p._id === product)[0].price
+      try{
+        const res = await addProductCall(state.cart.cartId, product, size, color, price)
+        dispatch(setCart(res))
+        dispatch(addProduct({}))
+      }
+      catch(err){
+        console.log(err);
+      }
+    }
   }
 
   // REMOVE PRODUCT FROM DATABASE

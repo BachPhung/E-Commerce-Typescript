@@ -1,6 +1,6 @@
 PUT http://localhost:5000/api/carts/6267e50e1a5b685f484b8a40
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNGYxMWE1YjY4NWY0ODRiOGEzNSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NTEzNzc1MzAsImV4cCI6MTY1MTU1MDMzMH0.P5OdbQBgk9QmvEPQD-otyokGmhP5pqEGiFmDcQtUABY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlMWE1YjY4NWY0ODRiOGEzYyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MTc3OTQ4OCwiZXhwIjoxNjUxOTUyMjg4fQ.FMZb6BgdL9Q1-_dvlyPlcJngZZCWaVSrY8RjvW5ClvM
 
 {
     "products":[
@@ -8,7 +8,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNGYxM
             "product": "623a7f4a289e69175812e21f",
             "size": "S",
             "color": "Beige",
-            "quantity": 10,
+            "quantity": 5,
             "price": 31.99
         }
     ]

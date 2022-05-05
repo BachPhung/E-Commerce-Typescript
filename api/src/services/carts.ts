@@ -8,7 +8,7 @@ const create = async (cart: CartDocument): Promise<CartDocument> => {
 // CHANGE
 
 const update = async (cartId: string, updatedCart: Partial<CartDocument>): Promise<CartDocument | null> => {
-  const foundCart: CartDocument | null = await Cart.findByIdAndUpdate(cartId, updatedCart, { new: true }).populate("products.product",{price:1});
+  const foundCart: CartDocument | null = await Cart.findByIdAndUpdate(cartId, updatedCart, { new: true });
   if (!foundCart) {
     throw new Error(`Product ${cartId} not found`);
   }

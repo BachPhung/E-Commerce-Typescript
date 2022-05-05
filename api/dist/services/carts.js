@@ -19,7 +19,7 @@ const create = (cart) => __awaiter(void 0, void 0, void 0, function* () {
 });
 // CHANGE
 const update = (cartId, updatedCart) => __awaiter(void 0, void 0, void 0, function* () {
-    const foundCart = yield Cart_1.default.findByIdAndUpdate(cartId, updatedCart, { new: true }).populate("products.product", { price: 1 });
+    const foundCart = yield Cart_1.default.findByIdAndUpdate(cartId, updatedCart, { new: true });
     if (!foundCart) {
         throw new Error(`Product ${cartId} not found`);
     }

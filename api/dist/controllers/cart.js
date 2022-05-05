@@ -105,7 +105,7 @@ exports.decreaseQuantity = (req, res, next) => __awaiter(void 0, void 0, void 0,
         const updatedProduct = products[updatedProductIndex];
         if (updatedProduct.quantity === 1) {
             products = products.filter(p => {
-                return !(p.size === size && p.color === color);
+                return !(p.size === size && p.color === color && p.product.id === productId);
             });
         }
         else {
