@@ -39,7 +39,6 @@ const Logo = styled.h1<LogoProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 60px;
   color: ${p => p.color};
 `
 const Right = styled.div`
@@ -67,7 +66,7 @@ export const Navbar = (props: NavBarProps) => {
       <Wrapper>
         <Left>
           <Link className='link' to='/products'>
-            <Logo color={props.pages === 'LandingPage' ? 'white' : 'black'}>AZAWON</Logo>
+            <Logo className='logo' style={{paddingLeft:'10px'}} color={props.pages === 'LandingPage' ? 'white' : 'black'}>AZAWON</Logo>
           </Link>
         </Left>
         <Right>

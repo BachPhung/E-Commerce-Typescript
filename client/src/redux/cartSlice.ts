@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addProductCall, decreaseQuantityCall, increaseQuantityCall } from "../apiCalls";
+import { decreaseQuantityCall, increaseQuantityCall } from "../apiCalls";
 import { CartProduct } from "../types";
 
 export type initialCartStateType = {

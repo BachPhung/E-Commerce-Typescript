@@ -1,8 +1,9 @@
 import {
   Box, Drawer, AppBar, Toolbar, List, Typography,
-  Divider, ListItem, ListItemText, TextField
+  Divider, ListItem, ListItemText, TextField, IconButton
 } from "@mui/material"
 import { Search } from "@material-ui/icons";
+import MenuIcon from '@mui/icons-material/Menu';
 import { ChangeEvent, useState } from "react";
 import { Navbar } from "../../components/Navbar/Navbar";
 import { ProductList } from "../../components/ProductList/ProductList";
@@ -12,6 +13,11 @@ import './ProductList.scss'
 const drawerWidth = 200;
 
 export const ProductListPage = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
   const [filter, setFilter] = useState({
     field: 'new',
     cat: 'view all',
@@ -30,57 +36,97 @@ export const ProductListPage = () => {
       search: searchInput
     })
   }
+  const drawer = (
+    <Box >
+      <Typography variant="h6" fontSize={20}>
+        New Arrivals
+      </Typography>
+      <List>
+        {['View All', 'Clothes', 'Underwear'].map((text) => (
+          <ListItem className="listItem" button key={text}>
+            <ListItemText onClick={() => handleChangeCate('new', text.toString().toLowerCase())} primary={text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <Typography variant="h6" fontSize={20} sx={{ ml: 1 }}>
+        Men Collection
+      </Typography>
+      <List>
+        {['View All', 'Shoes', 'Hoodie', 'Jeans'].map((text) => (
+          <ListItem className="listItem" button key={text + '0'}>
+            <ListItemText onClick={() => handleChangeCate('men', text.toString().toLowerCase())} primary={text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <Typography variant="h6" fontSize={20} sx={{ ml: 1 }}>
+        Women Collection
+      </Typography>
+      <List>
+        {['View All', 'Shoes', 'Hoodie', 'Jeans'].map((text) => (
+          <ListItem className="listItem" button key={text + '1'}>
+            <ListItemText onClick={() => handleChangeCate('women', text.toString().toLowerCase())} primary={text} />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  )
   return (
     <>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Box sx={{ display: 'flex' }}>
-        <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-          <Navbar />
+        <AppBar position="fixed" sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          height: '60px'
+        }}> 
+            <Navbar/>
+            <IconButton  
+              aria-label="open drawer"
+              onClick={handleDrawerToggle}
+              sx={{display: { sm: 'none' } }}
+              style={{
+                height: '30px',
+                width:'30px',
+                top: '20px',
+                zIndex: '20'
+              }}
+            >
+              <MenuIcon 
+              />
+            </IconButton>
+            
         </AppBar>
-        <Drawer
-          variant="permanent"
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-          }}
+        <Box
+          component="nav"
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         >
-          <Toolbar sx={{ mt: 5.5 }} />
-          <Box sx={{ overflow: 'auto' }}>
-            <Typography variant="h6" fontSize={20} sx={{ ml: 1 }}>
-              New Arrivals
-            </Typography>
-            <List>
-              {['View All', 'Clothes', 'Underwear'].map((text) => (
-                <ListItem className="listItem" button key={text}>
-                  <ListItemText onClick={() => handleChangeCate('new', text.toString().toLowerCase())} primary={text} />
-                </ListItem>
-              ))}
-            </List>
-            <Divider />
-            <Typography variant="h6" fontSize={20} sx={{ ml: 1 }}>
-              Men Collection
-            </Typography>
-            <List>
-              {['View All', 'Shoes', 'Hoodie', 'Jeans'].map((text) => (
-                <ListItem className="listItem" button key={text + '0'}>
-                  <ListItemText onClick={() => handleChangeCate('men', text.toString().toLowerCase())} primary={text} />
-                </ListItem>
-              ))}
-            </List>
-            <Divider />
-            <Typography variant="h6" fontSize={20} sx={{ ml: 1 }}>
-              Women Collection
-            </Typography>
-            <List>
-              {['View All', 'Shoes', 'Hoodie', 'Jeans'].map((text) => (
-                <ListItem className="listItem" button key={text + '1'}>
-                  <ListItemText onClick={() => handleChangeCate('women', text.toString().toLowerCase())} primary={text} />
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        </Drawer>
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+            }}
+            style={{ marginTop: '80px' }}
+          >
+            {drawer}
+          </Drawer>
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, marginTop: '80px' },
+            }}
+            open
+            style={{ marginTop: '80px' }}
+          >
+            {drawer}
+          </Drawer>
+        </Box>
         <Box component="main" sx={{ flexGrow: 1 }}>
           <Toolbar sx={{ mt: 2.5 }} />
           <Box display='flex' justifyContent='space-between' sx={{ height: '60px', mb: 3 }} >
