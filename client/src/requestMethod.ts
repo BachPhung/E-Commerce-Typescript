@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = 'http://localhost:5000/api'
+const BASE_URL = 'https://bachphung-ecommerce.herokuapp.com/api'
 
 
 export const getToken = ():string =>{
