@@ -29,21 +29,26 @@ exports.updateCart = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     try {
         let quantity = 0;
         let total = 0;
-        let products;
+        let products = [];
         const cartId = req.params.id;
         const fetchedCart = yield carts_1.default.findById(cartId);
+        products = fetchedCart.products;
+        quantity = fetchedCart.quantity;
+        total = fetchedCart.total;
         if (req.body.products) {
-            products = fetchedCart.products.concat(req.body.products);
-            products.forEach(p => {
-                if (p.quantity) {
-                    quantity += p.quantity;
-                    total += p.price * p.quantity;
-                }
-                else {
-                    quantity += 1;
-                    total += p.price;
-                }
+            const checkExistedProductIndex = fetchedCart.products.findIndex(p => {
+                return p.product._id == req.body.products[0].product
+                    && p.color == req.body.products[0].color
+                    && p.size == req.body.products[0].size;
             });
+            if (checkExistedProductIndex !== -1) {
+                products[checkExistedProductIndex].quantity += req.body.products[0].quantity || 1;
+            }
+            else {
+                products = products.concat(req.body.products);
+            }
+            total += req.body.products[0].price * req.body.products[0].quantity;
+            quantity += req.body.products[0].quantity;
         }
         const newCart = {
             products,

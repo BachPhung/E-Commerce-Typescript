@@ -1,6 +1,7 @@
 import CartServ from '../services/carts';
 import { Request, Response, NextFunction } from 'express';
-import Cart from '../models/Cart';
+import Cart, { CartDocument } from '../models/Cart';
+import { ProductOrderDocument } from '../models/Order';
 
 export const findAll = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -17,21 +18,26 @@ export const updateCart = async (req: Request, res: Response, next: NextFunction
   try {
     let quantity: number = 0;
     let total: number = 0;
-    let products;
+    let products: ProductOrderDocument[] = [];
     const cartId = req.params.id;
-    const fetchedCart = await CartServ.findById(cartId);
+    const fetchedCart: CartDocument = await CartServ.findById(cartId);
+    products = fetchedCart.products
+    quantity = fetchedCart.quantity
+    total = fetchedCart.total
     if (req.body.products) {
-      products = fetchedCart.products.concat(req.body.products)
-      products.forEach(p => {
-        if (p.quantity) {
-          quantity += p.quantity;
-          total += p.price * p.quantity
-        }
-        else {
-          quantity += 1;
-          total += p.price
-        }
+      const checkExistedProductIndex = fetchedCart.products.findIndex(p => {
+        return p.product._id == req.body.products[0].product
+          && p.color == req.body.products[0].color
+          && p.size == req.body.products[0].size
       })
+      if (checkExistedProductIndex !== -1) {
+        products[checkExistedProductIndex].quantity += req.body.products[0].quantity || 1
+      }
+      else {
+        products = products.concat(req.body.products)
+      }
+      total += req.body.products[0].price * req.body.products[0].quantity
+      quantity += req.body.products[0].quantity
     }
     const newCart = {
       products,
@@ -47,7 +53,7 @@ export const updateCart = async (req: Request, res: Response, next: NextFunction
 }
 
 //Increase quantity of product
-export const increaseQuantity = async(req: Request, res: Response, next: NextFunction) => {
+export const increaseQuantity = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const cartId = req.params.id;
     const fetchedCart = await CartServ.findById(cartId);

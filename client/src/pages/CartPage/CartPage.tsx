@@ -5,7 +5,6 @@ import { addQuantity, decreaseQuantity } from '../../redux/cartSlice'
 import styled from 'styled-components'
 import { RootState } from '../../redux/store'
 import { Add, Remove } from '@material-ui/icons';
-import { CartProduct } from '../../types'
 import { useAppSelector } from '../../redux/hooks'
 
 const ProductDetail = styled.div`

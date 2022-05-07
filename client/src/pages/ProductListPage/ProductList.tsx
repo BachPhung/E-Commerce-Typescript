@@ -76,10 +76,7 @@ export const ProductListPage = () => {
     <>
       <ScrollToTop />
       <Box sx={{ display: 'flex' }}>
-        <AppBar position="fixed" sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          height: '60px'
-        }}> 
+        <AppBar position="fixed" > 
             <Navbar/>
             <IconButton  
               aria-label="open drawer"
