@@ -7,8 +7,10 @@ COPY . .
 RUN npm run build
 
 #RUNNING
-FROM node:alpine
+FROM nginx:latest
 WORKDIR /opt/app
-COPY --from=builder /opt/app/build /opt/app/build
-RUN npm install -g serve
-CMD ["serve", "build"]
+COPY --from=builder /opt/app/build /usr/share/nginx/html
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d
+
+CMD ["nginx", "-g", "daemon off;"]
