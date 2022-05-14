@@ -1,0 +1,6 @@
+# Dependency directory
+node_modules
+# git folder
+.git
+# 
+README.md
