@@ -1,10 +1,10 @@
 PUT http://localhost:5000/api/carts/increase/6267e50e1a5b685f484b8a40
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlMWE1YjY4NWY0ODRiOGEzYyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MTM2ODI0NywiZXhwIjoxNjUxNTQxMDQ3fQ.GWy023JuhPxuGPognn3Wc2oDG_ZsPucTDj4OIAdIVWM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlMWE1YjY4NWY0ODRiOGEzYyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MjgzNDA5OCwiZXhwIjoxNjUzMDA2ODk4fQ.QrpEwUkBGmz5xjijp_EO1nz7tDU10YBaM-k2BLFDS1Q
 
 {
     "productId": "623a7f4a289e69175812e21f",
     "size": "S",
-    "color": "Yellow",
+    "color": "Beige",
     "price": 31.99
 }

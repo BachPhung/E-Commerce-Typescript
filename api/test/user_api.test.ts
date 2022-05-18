@@ -5,20 +5,21 @@ import supertest from 'supertest'
 import app from '../src/app'
 import mongoose from 'mongoose'
 import config from '../src/middlewares/config'
+import Cart from '../src/models/Cart'
 
 const api = supertest(app);
 
 describe('when there is initial one user in db', () => {
     beforeEach(async () => {
         await User.deleteMany({});
+        await Cart.deleteMany({})
         if (config.SALTROUNDS) {
             const password = await bcrypt.hash('123456789', Number(config.SALTROUNDS));
             const user = new User({
                 username: 'rootuser',
                 password,
                 first_name: "Root",
-                last_name: "User",
-                email: "root@gmail.com"
+                last_name: "User"
             })
             await user.save()
         }
@@ -28,11 +29,10 @@ describe('when there is initial one user in db', () => {
         const newUser = new User({
             first_name: "Bach",
             last_name: "Phung",
-            username: "quangbach4",
-            password: "123456789",
-            email: "quangbach4@gmail.com"
+            username: "quangbach2",
+            password: "123456789"
         })
-        await api
+        const res = await api
             .post('/api/auth/register')
             .send(newUser)
             .expect(200)
@@ -46,7 +46,6 @@ describe('when there is initial one user in db', () => {
             last_name: "Phung",
             username: "rootuser",
             password: "123456789",
-            email: "quangbach4@gmail.com"
         }
         const res = await api
             .post('/api/auth/register')
@@ -60,8 +59,7 @@ describe('when there is initial one user in db', () => {
             first_name: "Bach",
             last_name: "Phung",
             username: "root",
-            password: "123456789",
-            email: "quangbach4@gmail.com"
+            password: "123456789"
         }
         const res = await api
             .post('/api/auth/register')
@@ -70,7 +68,7 @@ describe('when there is initial one user in db', () => {
             .expect('Content-Type', /application\/json/)
         expect(res.body.error).toContain('Username or Password must be at least 8 chars long')
     })
-    afterAll(()=>{
+    afterAll(() => {
         mongoose.connection.close()
     })
 })

@@ -49,7 +49,7 @@ exports.userRegister = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
     catch (error) {
         if (error instanceof Error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: "username or email has already existed" });
         }
         else {
             next(error);

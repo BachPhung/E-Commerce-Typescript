@@ -17,7 +17,7 @@ const errorHandler = (error, request, response, next) => {
             error: 'token expired'
         });
     }
-    console.log(error.message);
+    // console.log(error.message)
     next(error);
 };
 exports.default = errorHandler;

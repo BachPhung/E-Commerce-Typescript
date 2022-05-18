@@ -125,7 +125,8 @@ exports.decreaseQuantity = (req, res, next) => __awaiter(void 0, void 0, void 0,
         res.status(200).json(updatedCart);
     }
     catch (err) {
-        next(err);
+        // next(err)
+        console.log(err);
     }
 });
 exports.deleteCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {

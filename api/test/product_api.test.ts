@@ -7,20 +7,21 @@ import jwt from 'jsonwebtoken'
 import app from '../src/app'
 import mongoose from 'mongoose'
 import config from '../src/middlewares/config'
+import Cart from '../src/models/Cart'
 
 const api = supertest(app);
 let token: string;
 beforeEach(async () => {
-    if(config.SALTROUNDS && config.TOKENSECRET){
+    if (config.SALTROUNDS && config.TOKENSECRET) {
         await Product.deleteMany({})
         await User.deleteMany({})
+        await Cart.deleteMany({})
         const password = await bcrypt.hash('123456789', Number(config.SALTROUNDS));
         const user = new User({
             username: 'rootuser',
             password,
             first_name: "Root",
             last_name: "User",
-            email: "root@gmail.com",
             isAdmin: true
         })
         const savedUser = await user.save()
@@ -33,7 +34,7 @@ beforeEach(async () => {
 })
 
 
-test('products are returned as json', async () => {
+test('HTTP GET products are returned as json', async () => {
     const res = await api
         .get('/api/products')
         .expect(200)
@@ -84,6 +85,34 @@ test('HTTP POST request with non token provided', async () => {
         .expect('Content-Type', /application\/json/)
     const res = await api.get('/api/products')
     expect(res.body.length).toBe(helper.initialProducts.length)
+})
+
+test('HTTP DELETE product', async () => {
+    const res = await api.get('/api/products');
+    const id = res.body[0]._id;
+
+    await api
+        .delete(`/api/products/${id}`)
+        .expect(200)
+        .set('authorization', `Bearer ${token}`)
+        .expect('Content-Type', /application\/json/)
+    const productsAtEnd = await api.get('/api/products');
+    expect(productsAtEnd.body).toHaveLength(1)
+})
+
+test('HTTP PUT update product', async () => {
+    const res = await api.get('/api/products');
+    const id = res.body[0]._id;
+    const updatedInfo = {
+        price: 10000
+    }
+    const res2 = await api
+                    .put(`/api/products/${id}`)
+                    .send(updatedInfo)
+                    .expect(200)
+                    .set('authorization', `Bearer ${token}`)
+                    .expect('Content-Type', /application\/json/)
+    expect(res2.body.price).toBe(10000)
 })
 
 afterAll(() => {

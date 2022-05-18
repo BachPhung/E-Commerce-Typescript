@@ -116,7 +116,9 @@ export const decreaseQuantity = async (req: Request, res: Response, next: NextFu
     res.status(200).json(updatedCart);
   }
   catch (err) {
-    next(err)
+    // next(err)
+    console.log(err)
+    
   }
 }
 

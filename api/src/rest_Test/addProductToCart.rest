@@ -1,6 +1,6 @@
 PUT http://localhost:5000/api/carts/6267e50e1a5b685f484b8a40
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlMWE1YjY4NWY0ODRiOGEzYyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MTc3OTQ4OCwiZXhwIjoxNjUxOTUyMjg4fQ.FMZb6BgdL9Q1-_dvlyPlcJngZZCWaVSrY8RjvW5ClvM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlNTBlMWE1YjY4NWY0ODRiOGEzYyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MjgzNDA5OCwiZXhwIjoxNjUzMDA2ODk4fQ.QrpEwUkBGmz5xjijp_EO1nz7tDU10YBaM-k2BLFDS1Q
 
 {
     "products":[
